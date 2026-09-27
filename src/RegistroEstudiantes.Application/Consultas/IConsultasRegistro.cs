@@ -11,8 +11,8 @@ public interface IConsultasRegistro
     Task<IReadOnlyList<CatalogoItemDto>> ListarProgramasAsync(CancellationToken ct = default);
     Task<IReadOnlyList<CatalogoItemDto>> ListarTiposIdentificacionAsync(CancellationToken ct = default);
 
-    /// <summary>Materias que el estudiante puede ver en su programa.</summary>
-    Task<IReadOnlyList<MateriaDisponibleDto>> ListarMateriasDelPlanAsync(int idPrograma, CancellationToken ct = default);
+    /// <summary>Materias del plan de estudios del programa del estudiante.</summary>
+    Task<IReadOnlyList<MateriaDisponibleDto>> ListarMateriasDisponiblesAsync(int idEstudiante, CancellationToken ct = default);
 
     /// <summary>Datos del estudiante, sus materias y sus compañeros por clase.</summary>
     Task<MiRegistroDto?> ObtenerMiRegistroAsync(int idEstudiante, CancellationToken ct = default);

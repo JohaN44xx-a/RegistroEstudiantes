@@ -4,7 +4,7 @@ using RegistroEstudiantes.Application.Common;
 namespace RegistroEstudiantes.Application.Estudiantes;
 
 /// <summary>
-/// "D" del CRUD. Borra el estudiante (sus inscripciones se van con él,
+/// Eliminación: Borra el estudiante (sus inscripciones se van con él,
 /// porque son parte del agregado) y su cuenta de usuario.
 /// </summary>
 public class EliminarEstudiante(IEstudianteRepository estudiantes, IUsuarioRepository usuarios, IUnidadDeTrabajo unidadDeTrabajo)

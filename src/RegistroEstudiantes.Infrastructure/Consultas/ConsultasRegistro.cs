@@ -23,14 +23,30 @@ public class ConsultasRegistro(RegistroEstudiantesDbContext contexto) : IConsult
                          .Select(t => new CatalogoItemDto(t.IdTipoIdentificacion, t.Nombre))
                          .ToListAsync(ct);
 
-    public async Task<IReadOnlyList<MateriaDisponibleDto>> ListarMateriasDelPlanAsync(int idPrograma, CancellationToken ct = default)
-        => await (from pe in contexto.PlanesEstudios.AsNoTracking()
-                  join m in contexto.Materias on pe.IdMateria equals m.IdMateria
-                  join p in contexto.Profesores on m.IdProfesor equals p.IdProfesor
-                  where pe.IdPrograma == idPrograma
-                  orderby m.Nombre
-                  select new MateriaDisponibleDto(m.IdMateria, m.Nombre, m.Creditos, p.IdProfesor, p.Nombre))
-                 .ToListAsync(ct);
+    public async Task<IReadOnlyList<MateriaDisponibleDto>> ListarMateriasDisponiblesAsync(int idEstudiante, CancellationToken ct = default)
+    {
+        var idPrograma = await contexto.Estudiantes.AsNoTracking()
+                                       .Where(e => e.IdEstudiante == idEstudiante)
+                                       .Select(e => (int?)e.IdPrograma)
+                                       .FirstOrDefaultAsync(ct);
+
+        if (idPrograma is null)
+            return [];
+
+        var idsInscritas = await contexto.Set<Inscripcion>().AsNoTracking()
+                                         .Where(i => i.IdEstudiante == idEstudiante)
+                                         .Select(i => i.IdMateria)
+                                         .ToListAsync(ct);
+
+        return await (from pe in contexto.PlanesEstudios.AsNoTracking()
+                      join m in contexto.Materias on pe.IdMateria equals m.IdMateria
+                      join p in contexto.Profesores on m.IdProfesor equals p.IdProfesor
+                      where pe.IdPrograma == idPrograma
+                      orderby p.Nombre, m.Nombre
+                      select new MateriaDisponibleDto(m.IdMateria, m.Nombre, m.Creditos, p.IdProfesor, p.Nombre,
+                                                      idsInscritas.Contains(m.IdMateria)))
+                     .ToListAsync(ct);
+    }
 
     public async Task<MiRegistroDto?> ObtenerMiRegistroAsync(int idEstudiante, CancellationToken ct = default)
     {

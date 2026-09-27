@@ -23,8 +23,8 @@ public class RegistrarEstudiante(IUsuarioRepository usuarios, IEstudianteReposit
 
     public async Task<int> EjecutarAsync(RegistrarEstudianteRequest request, CancellationToken ct = default)
     {
-        // 1. Validaciones que necesitan consultar la base o que son
-        //    políticas de la aplicación (no reglas del estudiante).
+        // Validaciones que necesitan consultar la base o que son
+        // políticas de la aplicación (no reglas del estudiante).
         if (string.IsNullOrWhiteSpace(request.Contrasena) || request.Contrasena.Length < LongitudMinimaContrasena)
             throw new ReglaDeNegocioException(
                 $"La contraseña debe tener al menos {LongitudMinimaContrasena} caracteres.");
@@ -49,9 +49,9 @@ public class RegistrarEstudiante(IUsuarioRepository usuarios, IEstudianteReposit
 
         var idRol = await usuarios.ObtenerIdRolAsync(Roles.Estudiante, ct);
 
-        // 2. Dos guardados porque el Estudiante necesita el IdUsuario que
-        //    genera la base. Si algo falla antes de Confirmar, la
-        //    transacción se deshace al salir del using.
+        // Dos guardados porque el Estudiante necesita el IdUsuario que
+        // genera la base. Si algo falla antes de Confirmar, la
+        // transacción se deshace al salir del using.
         await using var transaccion = await unidadDeTrabajo.IniciarTransaccionAsync(ct);
 
         var usuario = new Usuario(request.Nombre, correo, hasher.Hashear(request.Contrasena), idRol);

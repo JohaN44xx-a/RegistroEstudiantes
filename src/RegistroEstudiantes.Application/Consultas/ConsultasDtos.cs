@@ -2,14 +2,22 @@ namespace RegistroEstudiantes.Application.Consultas;
 
 public record CatalogoItemDto(int Id, string Nombre);
 
-public record MateriaDisponibleDto(int IdMateria, string Nombre, int Creditos, int IdProfesor, string Profesor);
+/// <summary>
+/// Materia del plan del estudiante. Inscrita indica si ya la tiene; así
+/// la interfaz puede mostrarla marcada. La decisión final de si se puede
+/// inscribir SIEMPRE la toma el dominio.
+/// </summary>
+public record MateriaDisponibleDto(int IdMateria, string Nombre, int Creditos, int IdProfesor,
+                                   string Profesor, bool Inscrita);
 
 /// <summary>
 /// Regla 9: de los compañeros solo se expone el nombre.
 /// </summary>
-public record MateriaInscritaDto(int IdMateria, string Nombre, int Creditos, string Profesor, IReadOnlyList<string> Companeros);
+public record MateriaInscritaDto(int IdMateria, string Nombre, int Creditos, string Profesor,
+                                 IReadOnlyList<string> Companeros);
 
-public record MiRegistroDto(int IdEstudiante, string Nombre, string TipoIdentificacion, string NumeroIdentificacion, string Programa, string CorreoElectronico, 
+public record MiRegistroDto(int IdEstudiante, string Nombre, string TipoIdentificacion,
+                            string NumeroIdentificacion, string Programa, string CorreoElectronico,
                             int TotalCreditos, IReadOnlyList<MateriaInscritaDto> Materias);
 
 /// <summary>

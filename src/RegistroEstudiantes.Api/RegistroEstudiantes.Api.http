@@ -1,6 +1,47 @@
-@RegistroEstudiantes.Api_HostAddress = http://localhost:5024
+# Pruebas rápidas desde Visual Studio (botón "Enviar solicitud" sobre cada una).
+# Ajusta el puerto al que aparece en Properties/launchSettings.json (perfil https).
+@api = https://localhost:7001
 
-GET {{RegistroEstudiantes.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### Catálogo público (para el formulario de registro)
+GET {{api}}/api/catalogo/programas
 
-###
+### Login como Juan Pérez (estudiante de prueba)
+# @name login
+POST {{api}}/api/autenticacion/login
+Content-Type: application/json
+
+{
+  "correoElectronico": "juan.perez@registro.edu.co",
+  "contrasena": "Estudiante2026*"
+}
+
+### Mi registro: materias y compañeros por clase (regla 9)
+GET {{api}}/api/mi-registro
+Authorization: Bearer {{login.response.body.$.token}}
+
+### Materias de mi plan de estudios
+GET {{api}}/api/mi-registro/materias-disponibles
+Authorization: Bearer {{login.response.body.$.token}}
+
+### Regla 7: Juan ya tiene Cálculo con Laura Gómez; Álgebra Lineal también es de ella → 400
+# Revisa el IdMateria de "Álgebra Lineal" en la respuesta anterior.
+POST {{api}}/api/mi-registro/inscripciones
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "idMateria": 2
+}
+
+### Registros de todos los estudiantes (regla 8)
+GET {{api}}/api/registros
+Authorization: Bearer {{login.response.body.$.token}}
+
+### Login con contraseña incorrecta → 401 con mensaje genérico
+POST {{api}}/api/autenticacion/login
+Content-Type: application/json
+
+{
+  "correoElectronico": "juan.perez@registro.edu.co",
+  "contrasena": "incorrecta"
+}
