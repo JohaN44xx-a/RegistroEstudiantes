@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RegistroEstudiantes.Domain.Estudiantes;
+﻿namespace RegistroEstudiantes.Domain.Estudiantes;
 
 public class Inscripcion
 {
@@ -14,6 +10,7 @@ public class Inscripcion
 
     private Inscripcion() { }
 
+    // Internal: solo el agregado Estudiante crea inscripciones.
     internal Inscripcion(int idMateria, int idProfesor)
     {
         IdMateria = idMateria;
