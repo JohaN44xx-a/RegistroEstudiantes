@@ -12,7 +12,7 @@ public class Inscripcion
     public int IdProfesor { get; private set; }
     public DateTime FechaInscripcion { get; private set; }
 
-    private Inscripcion() { } 
+    private Inscripcion() { }
 
     internal Inscripcion(int idMateria, int idProfesor)
     {

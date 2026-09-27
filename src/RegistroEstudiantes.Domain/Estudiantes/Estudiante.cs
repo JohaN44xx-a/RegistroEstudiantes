@@ -24,17 +24,10 @@ namespace RegistroEstudiantes.Domain.Estudiantes
         { 
         }
 
-        public Estudiante(string nombre, int idTipoIdentificacion, string numeroIdentificacion, int idPrograma, int idUsuario)
+        public Estudiante(string nombre, int idTipoIdentificacion, string numeroIdentificacion,
+                        int idPrograma, int idUsuario)
         {
-            if (string.IsNullOrWhiteSpace(nombre))
-                throw new ReglaDeNegocioException("El nombre del estudiante es obligatorio.");
-
-            if (string.IsNullOrWhiteSpace(numeroIdentificacion))
-                throw new ReglaDeNegocioException("El número de identificación es obligatorio.");
-
-            Nombre = nombre.Trim();
-            IdTipoIdentificacion = idTipoIdentificacion;
-            NumeroIdentificacion = numeroIdentificacion.Trim();
+            ActualizarDatos(nombre, idTipoIdentificacion, numeroIdentificacion);
             IdPrograma = idPrograma;
             IdUsuario = idUsuario;
         }
@@ -61,6 +54,19 @@ namespace RegistroEstudiantes.Domain.Estudiantes
                 throw new ReglaDeNegocioException("No tienes inscrita esta materia.");
 
             _inscripciones.Remove(inscripcion);
+        }
+
+        public void ActualizarDatos(string nombre, int idTipoIdentificacion, string numeroIdentificacion)
+        {
+            if (string.IsNullOrWhiteSpace(nombre))
+                throw new ReglaDeNegocioException("El nombre del estudiante es obligatorio.");
+
+            if (string.IsNullOrWhiteSpace(numeroIdentificacion))
+                throw new ReglaDeNegocioException("El número de identificación es obligatorio.");
+
+            Nombre = nombre.Trim();
+            IdTipoIdentificacion = idTipoIdentificacion;
+            NumeroIdentificacion = numeroIdentificacion.Trim();
         }
     }
 }
