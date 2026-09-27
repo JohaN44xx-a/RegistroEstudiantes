@@ -15,8 +15,7 @@ public class UsuarioRepository(RegistroEstudiantesDbContext contexto) : IUsuario
     public Task<bool> ExisteCorreoAsync(string correoNormalizado, CancellationToken ct = default)
         => contexto.Usuarios.AnyAsync(u => u.CorreoElectronico == correoNormalizado, ct);
 
-    // Si el rol no existe es un error de configuración (el script no se
-    // ejecutó), no un error del usuario: por eso First y no FirstOrDefault.
+    // First y no FirstOrDefault: si falta un rol, es un error de configuración.
     public Task<int> ObtenerIdRolAsync(string nombreRol, CancellationToken ct = default)
         => contexto.Roles.Where(r => r.Nombre == nombreRol).Select(r => r.IdRol).FirstAsync(ct);
 

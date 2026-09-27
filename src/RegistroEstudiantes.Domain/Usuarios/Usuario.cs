@@ -2,10 +2,6 @@ using RegistroEstudiantes.Domain.Common;
 
 namespace RegistroEstudiantes.Domain.Usuarios;
 
-/// <summary>
-/// Cuenta con la que alguien inicia sesión. Pertenece al contexto de
-/// Identidad: no sabe nada de estudiantes ni de inscripciones.
-/// </summary>
 public class Usuario
 {
     public int IdUsuario { get; private set; }
@@ -41,10 +37,6 @@ public class Usuario
         Nombre = nombre.Trim();
     }
 
-    /// <summary>
-    /// "Juan@Correo.com " y "juan@correo.com" son la misma cuenta.
-    /// Se normaliza siempre igual al guardar y al buscar en el login.
-    /// </summary>
     public static string NormalizarCorreo(string correoElectronico)
         => correoElectronico.Trim().ToLowerInvariant();
 }

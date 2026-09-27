@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { mensajeDeError } from '../core/http/mensaje-error';
 
-/** Mensajes breves al usuario, con un solo estilo en toda la app. */
 @Injectable({ providedIn: 'root' })
 export class NotificacionService {
   private readonly snackBar = inject(MatSnackBar);

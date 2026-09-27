@@ -8,22 +8,23 @@ public record IniciarSesionRequest(string CorreoElectronico, string Contrasena);
 
 public record IniciarSesionResponse(string Token, DateTime ExpiraEnUtc, string Nombre, string Rol);
 
-public class IniciarSesion(IUsuarioRepository usuarios, IEstudianteRepository estudiantes, IHasherContrasenas hasher, IGeneradorToken generadorToken)
+public class IniciarSesion(
+    IUsuarioRepository usuarios,
+    IEstudianteRepository estudiantes,
+    IHasherContrasenas hasher,
+    IGeneradorToken generadorToken)
 {
     public async Task<IniciarSesionResponse> EjecutarAsync(IniciarSesionRequest request, CancellationToken ct = default)
     {
         if (string.IsNullOrWhiteSpace(request.CorreoElectronico) || string.IsNullOrWhiteSpace(request.Contrasena))
-        {
             throw new CredencialesInvalidasException();
-        }
+
         var correo = Usuario.NormalizarCorreo(request.CorreoElectronico);
         var usuario = await usuarios.ObtenerPorCorreoAsync(correo, ct);
 
-        // Mismo error si no existe el correo o si la contraseña no coincide.
+        // Mismo error si el correo no existe o la contraseña no coincide, para no revelar qué correos están registrados.
         if (usuario is null || !hasher.Verificar(usuario.ContrasenaHash, request.Contrasena))
-        {
             throw new CredencialesInvalidasException();
-        }
 
         var rol = await usuarios.ObtenerNombreRolAsync(usuario.IdRol, ct);
         var idEstudiante = await estudiantes.ObtenerIdPorUsuarioAsync(usuario.IdUsuario, ct);

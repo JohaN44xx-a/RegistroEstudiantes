@@ -3,15 +3,10 @@ using RegistroEstudiantes.Application.Abstractions;
 
 namespace RegistroEstudiantes.Infrastructure.Seguridad;
 
-/// <summary>
-/// Adaptador del puerto IHasherContrasenas usando el PasswordHasher de
-/// ASP.NET Core Identity: PBKDF2 con salt aleatorio y muchas iteraciones.
-/// El salt queda guardado dentro del mismo texto del hash.
-/// </summary>
+// PBKDF2 con salt aleatorio; el salt queda dentro del mismo hash.
 public class HasherContrasenas : IHasherContrasenas
 {
-    // PasswordHasher pide un "usuario" genérico que su implementación no
-    // usa; se le pasa un objeto vacío para no acoplarlo al dominio.
+    // PasswordHasher no usa el usuario; se pasa un objeto vacío para no acoplarlo al dominio.
     private static readonly object SinUsuario = new();
     private readonly PasswordHasher<object> _hasher = new();
 

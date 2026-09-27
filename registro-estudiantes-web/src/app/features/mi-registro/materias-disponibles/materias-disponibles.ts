@@ -7,14 +7,9 @@ import { MAXIMO_MATERIAS } from '../../../core/api/reglas';
 
 interface OpcionMateria {
   materia: MateriaDisponible;
-  /** null = se puede inscribir; texto = por qué no. */
   motivoBloqueo: string | null;
 }
 
-/**
- * Lista del plan de estudios. Todo lo que se muestra es ESTADO DERIVADO
- * con computed(): no hay código que "actualice" nada a mano.
- */
 @Component({
   selector: 'app-materias-disponibles',
   imports: [MatCardModule, MatButtonModule, MatDividerModule],
@@ -32,7 +27,7 @@ export class MateriasDisponibles {
   private readonly cupoLleno = computed(() => this.inscritas().length >= MAXIMO_MATERIAS);
   private readonly profesoresOcupados = computed(() => new Set(this.inscritas().map((m) => m.idProfesor)));
 
-  // Solo es ayuda visual: deshabilita y explica. La regla real la aplica la API.
+  // Solo guía visual: deshabilita y explica. La regla la aplica la API.
   protected readonly opciones = computed<OpcionMateria[]>(() =>
     this.materias()
       .filter((materia) => !materia.inscrita)

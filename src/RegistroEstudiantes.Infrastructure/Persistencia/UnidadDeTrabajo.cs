@@ -8,7 +8,6 @@ namespace RegistroEstudiantes.Infrastructure.Persistencia;
 
 public class UnidadDeTrabajo(RegistroEstudiantesDbContext contexto) : IUnidadDeTrabajo
 {
-    // Códigos de SQL Server para violación de UNIQUE / índice único.
     private const int ViolacionUnique = 2627;
     private const int ViolacionIndiceUnico = 2601;
 
@@ -21,9 +20,7 @@ public class UnidadDeTrabajo(RegistroEstudiantesDbContext contexto) : IUnidadDeT
         catch (DbUpdateException ex) when (ex.InnerException is SqlException sql &&
                                            sql.Number is ViolacionUnique or ViolacionIndiceUnico)
         {
-            // Segunda línea de defensa en acción: si dos peticiones llegan
-            // al mismo tiempo, el dominio puede no alcanzar a verlo, pero
-            // la base lo rechaza. Aquí se traduce a un mensaje entendible.
+            // Peticiones simultáneas que el dominio no alcanzó a ver: la base las rechaza por UNIQUE.
             throw new ReglaDeNegocioException(TraducirViolacionUnique(sql.Message));
         }
     }
@@ -46,7 +43,6 @@ public class UnidadDeTrabajo(RegistroEstudiantesDbContext contexto) : IUnidadDeT
     {
         public Task ConfirmarAsync(CancellationToken ct = default) => transaccion.CommitAsync(ct);
 
-        // Si se libera sin Confirmar, EF Core hace rollback.
         public ValueTask DisposeAsync() => transaccion.DisposeAsync();
     }
 }

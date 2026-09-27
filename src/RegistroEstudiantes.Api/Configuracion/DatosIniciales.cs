@@ -5,15 +5,7 @@ using RegistroEstudiantes.Domain.Usuarios;
 
 namespace RegistroEstudiantes.Api.Configuracion;
 
-/// <summary>
-/// Crea el administrador y estudiantes de prueba SOLO en desarrollo.
-///
-/// - Los estudiantes se crean con los mismos casos de uso que usa la app
-///   (RegistrarEstudiante e InscribirMateria), así que cumplen las mismas
-///   reglas que cualquier registro real.
-/// - Es idempotente: si el correo ya existe, no lo vuelve a crear.
-/// - Los datos están pensados para demostrar las reglas (ver README).
-/// </summary>
+// Solo en desarrollo. Usa los casos de uso reales para que los datos cumplan las mismas reglas.
 public static class DatosIniciales
 {
     public const string CorreoAdministrador = "admin@registro.edu.co";
@@ -29,24 +21,18 @@ public static class DatosIniciales
 
     private static readonly EstudianteDemo[] EstudiantesDemo =
     [
-        // Cupo lleno: sirve para probar que no deja inscribir una cuarta.
         new("Ana Torres", "ana.torres@registro.edu.co", "1000000001", Sistemas,
             ["Cálculo Diferencial", "Programación I", "Bases de Datos"]),
 
-        // Tiene Cálculo con Laura Gómez: sirve para probar que no deja
-        // inscribir Álgebra Lineal (misma profesora).
         new("Juan Pérez", "juan.perez@registro.edu.co", "1000000002", Sistemas,
             ["Cálculo Diferencial", "Estructuras de Datos"]),
 
-        // Comparte Cálculo y Bases de Datos con Ana: regla 9.
         new("María Rodríguez", "maria.rodriguez@registro.edu.co", "1000000003", Sistemas,
             ["Cálculo Diferencial", "Bases de Datos"]),
 
-        // Otro programa, con una materia compartida con Sistemas.
         new("Pedro Gómez", "pedro.gomez@registro.edu.co", "1000000004", Administracion,
             ["Cálculo Diferencial", "Metodología de la Investigación"]),
 
-        // Sin materias: para probar el flujo de inscripción desde cero.
         new("Camila Vargas", "camila.vargas@registro.edu.co", "1000000005", Administracion, [])
     ];
 

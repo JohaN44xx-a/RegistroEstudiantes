@@ -9,16 +9,11 @@ namespace RegistroEstudiantes.Api.Controllers;
 
 public record InscribirMateriaRequest(int IdMateria);
 
-/// <summary>
-/// Todo lo que un estudiante hace sobre SU propio registro. El Id del
-/// estudiante sale siempre del token (User.ObtenerIdEstudiante()).
-/// </summary>
 [ApiController]
 [Route("api/mi-registro")]
 [Authorize(Roles = Roles.Estudiante)]
 public class MiRegistroController : ControllerBase
 {
-    /// <summary>Datos, materias inscritas y compañeros de cada clase ("R" del CRUD).</summary>
     [HttpGet]
     [ProducesResponseType<MiRegistroDto>(StatusCodes.Status200OK)]
     public async Task<ActionResult<MiRegistroDto>> Obtener(
@@ -28,7 +23,6 @@ public class MiRegistroController : ControllerBase
         return registro is null ? NotFound() : Ok(registro);
     }
 
-    /// <summary>Actualiza nombre y documento ("U" del CRUD).</summary>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
@@ -41,7 +35,6 @@ public class MiRegistroController : ControllerBase
         return NoContent();
     }
 
-    /// <summary>Elimina el registro y la cuenta ("D" del CRUD).</summary>
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Eliminar(
@@ -51,7 +44,6 @@ public class MiRegistroController : ControllerBase
         return NoContent();
     }
 
-    /// <summary>Materias del plan de estudios del estudiante.</summary>
     [HttpGet("materias-disponibles")]
     [ProducesResponseType<IReadOnlyList<MateriaDisponibleDto>>(StatusCodes.Status200OK)]
     public async Task<ActionResult<IReadOnlyList<MateriaDisponibleDto>>> ListarMateriasDisponibles(

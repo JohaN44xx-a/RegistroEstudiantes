@@ -14,11 +14,6 @@ import { DatosEstudiante } from './datos-estudiante/datos-estudiante';
 import { MateriasDisponibles } from './materias-disponibles/materias-disponibles';
 import { MateriasInscritas } from './materias-inscritas/materias-inscritas';
 
-/**
- * Componente CONTENEDOR ("smart"): carga datos, habla con la API y
- * decide qué hacer. Los componentes hijos son de PRESENTACIÓN ("dumb"):
- * reciben datos por input() y avisan por output(), sin conocer la API.
- */
 @Component({
   selector: 'app-mi-registro',
   imports: [MatProgressBarModule, MatButtonModule, DatosEstudiante, MateriasInscritas, MateriasDisponibles],
@@ -34,16 +29,10 @@ export class MiRegistroPagina {
   private readonly dialogo = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
 
-  /** Cambiar este número dispara una nueva carga. */
   private readonly recargar = signal(0);
   protected readonly procesando = signal(false);
 
-  /**
-   * Signal -> Observable -> petición -> Signal.
-   * switchMap cancela la carga anterior si llega una nueva, así una
-   * respuesta vieja nunca pisa a una más reciente.
-   * Valor: undefined = cargando la primera vez, null = error.
-   */
+  // switchMap descarta la carga anterior si llega una nueva. undefined = cargando, null = error.
   protected readonly datos = toSignal(
     toObservable(this.recargar).pipe(
       switchMap(() =>
@@ -104,7 +93,6 @@ export class MiRegistroPagina {
       });
   }
 
-  /** Patrón común: mostrar progreso, avisar el resultado y recargar. */
   private ejecutar(operacion: Observable<void>, mensajeExito: string): void {
     this.procesando.set(true);
 
@@ -119,7 +107,6 @@ export class MiRegistroPagina {
           this.recargar.update((n) => n + 1);
         },
         error: (error) => {
-          // Por ejemplo, la regla 7 desde la API: "Ya tienes una materia con este profesor..."
           this.notificacion.error(error);
           this.recargar.update((n) => n + 1);
         },

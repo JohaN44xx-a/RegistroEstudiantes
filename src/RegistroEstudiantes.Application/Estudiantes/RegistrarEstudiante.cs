@@ -13,18 +13,17 @@ public record RegistrarEstudianteRequest(
     string NumeroIdentificacion,
     int IdPrograma);
 
-/// <summary>
-/// "C" del CRUD: registro en línea. Crea la cuenta (Usuario) y el
-/// Estudiante en una sola transacción: o quedan los dos, o ninguno.
-/// </summary>
-public class RegistrarEstudiante(IUsuarioRepository usuarios, IEstudianteRepository estudiantes, ICatalogoRepository catalogo, IHasherContrasenas hasher, IUnidadDeTrabajo unidadDeTrabajo)
+public class RegistrarEstudiante(
+    IUsuarioRepository usuarios,
+    IEstudianteRepository estudiantes,
+    ICatalogoRepository catalogo,
+    IHasherContrasenas hasher,
+    IUnidadDeTrabajo unidadDeTrabajo)
 {
     public const int LongitudMinimaContrasena = 8;
 
     public async Task<int> EjecutarAsync(RegistrarEstudianteRequest request, CancellationToken ct = default)
     {
-        // Validaciones que necesitan consultar la base o que son
-        // políticas de la aplicación (no reglas del estudiante).
         if (string.IsNullOrWhiteSpace(request.Contrasena) || request.Contrasena.Length < LongitudMinimaContrasena)
             throw new ReglaDeNegocioException(
                 $"La contraseña debe tener al menos {LongitudMinimaContrasena} caracteres.");
@@ -49,9 +48,7 @@ public class RegistrarEstudiante(IUsuarioRepository usuarios, IEstudianteReposit
 
         var idRol = await usuarios.ObtenerIdRolAsync(Roles.Estudiante, ct);
 
-        // Dos guardados porque el Estudiante necesita el IdUsuario que
-        // genera la base. Si algo falla antes de Confirmar, la
-        // transacción se deshace al salir del using.
+        // Dos guardados: el estudiante necesita el IdUsuario que genera la base.
         await using var transaccion = await unidadDeTrabajo.IniciarTransaccionAsync(ct);
 
         var usuario = new Usuario(request.Nombre, correo, hasher.Hashear(request.Contrasena), idRol);

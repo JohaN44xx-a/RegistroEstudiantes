@@ -7,7 +7,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ActualizarEstudianteRequest, CatalogoItem, MiRegistro } from '../../../core/api/modelos';
 
-/** "R", "U" y "D" del CRUD sobre los datos personales. Componente de presentación. */
 @Component({
   selector: 'app-datos-estudiante',
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule],

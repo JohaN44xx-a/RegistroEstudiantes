@@ -4,10 +4,6 @@ using RegistroEstudiantes.Application.Estudiantes;
 
 namespace RegistroEstudiantes.Application;
 
-/// <summary>
-/// Registra los casos de uso. Program.cs solo llama a AddApplication().
-/// Scoped: una instancia por petición HTTP.
-/// </summary>
 public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)

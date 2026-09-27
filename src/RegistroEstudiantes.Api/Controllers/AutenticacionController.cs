@@ -6,15 +6,10 @@ namespace RegistroEstudiantes.Api.Controllers;
 
 public record RegistroCreadoResponse(int IdEstudiante);
 
-/// <summary>
-/// Adaptador de entrada HTTP: traduce peticiones a casos de uso. No tiene
-/// lógica de negocio ni try/catch (los errores los maneja ManejadorExcepciones).
-/// </summary>
 [ApiController]
 [Route("api/autenticacion")]
 public class AutenticacionController : ControllerBase
 {
-    /// <summary>Registro en línea de un estudiante (la "C" del CRUD).</summary>
     [HttpPost("registro")]
     [ProducesResponseType<RegistroCreadoResponse>(StatusCodes.Status201Created)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
@@ -27,7 +22,6 @@ public class AutenticacionController : ControllerBase
         return Created("/api/mi-registro", new RegistroCreadoResponse(idEstudiante));
     }
 
-    /// <summary>Devuelve un JWT si el correo y la contraseña son correctos.</summary>
     [HttpPost("login")]
     [ProducesResponseType<IniciarSesionResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]

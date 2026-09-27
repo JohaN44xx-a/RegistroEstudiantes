@@ -3,11 +3,10 @@ using RegistroEstudiantes.Application.Common;
 
 namespace RegistroEstudiantes.Application.Estudiantes;
 
-/// <summary>
-/// Eliminación: Borra el estudiante (sus inscripciones se van con él,
-/// porque son parte del agregado) y su cuenta de usuario.
-/// </summary>
-public class EliminarEstudiante(IEstudianteRepository estudiantes, IUsuarioRepository usuarios, IUnidadDeTrabajo unidadDeTrabajo)
+public class EliminarEstudiante(
+    IEstudianteRepository estudiantes,
+    IUsuarioRepository usuarios,
+    IUnidadDeTrabajo unidadDeTrabajo)
 {
     public async Task EjecutarAsync(int idEstudiante, CancellationToken ct = default)
     {
@@ -20,8 +19,6 @@ public class EliminarEstudiante(IEstudianteRepository estudiantes, IUsuarioRepos
         if (usuario is not null)
             usuarios.Eliminar(usuario);
 
-        // Un solo guardado = una sola transacción. EF Core ordena los
-        // DELETE según las relaciones: inscripciones, estudiante, usuario.
         await unidadDeTrabajo.GuardarCambiosAsync(ct);
     }
 }

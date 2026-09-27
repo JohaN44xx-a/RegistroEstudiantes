@@ -5,11 +5,6 @@ using RegistroEstudiantes.Domain.Common;
 
 namespace RegistroEstudiantes.Api.Configuracion;
 
-/// <summary>
-/// Traduce las excepciones de las capas internas a respuestas HTTP con
-/// formato estándar ProblemDetails (RFC 9457). Así los controllers no
-/// necesitan try/catch y el frontend siempre recibe el mismo formato.
-/// </summary>
 public sealed class ManejadorExcepciones(
     IProblemDetailsService problemDetails,
     ILogger<ManejadorExcepciones> logger) : IExceptionHandler
@@ -25,8 +20,7 @@ public sealed class ManejadorExcepciones(
             _ => (StatusCodes.Status500InternalServerError, "Error interno")
         };
 
-        // Un error inesperado se registra completo en el log, pero al
-        // cliente nunca se le muestran detalles internos.
+        // Los errores inesperados se registran completos, pero al cliente no se le exponen detalles.
         if (estado == StatusCodes.Status500InternalServerError)
             logger.LogError(excepcion, "Error no controlado");
 

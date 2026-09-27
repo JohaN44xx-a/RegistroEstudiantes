@@ -2,7 +2,6 @@ using RegistroEstudiantes.Domain.Usuarios;
 
 namespace RegistroEstudiantes.Application.Abstractions;
 
-/// <summary>Puerto de salida para las cuentas de usuario.</summary>
 public interface IUsuarioRepository
 {
     Task<Usuario?> ObtenerPorIdAsync(int idUsuario, CancellationToken ct = default);

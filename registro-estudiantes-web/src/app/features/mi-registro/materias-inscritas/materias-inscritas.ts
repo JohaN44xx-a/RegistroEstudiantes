@@ -6,7 +6,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MateriaInscrita } from '../../../core/api/modelos';
 import { MAXIMO_MATERIAS } from '../../../core/api/reglas';
 
-/** Materias del estudiante y, por cada una, sus compañeros (regla 9). */
 @Component({
   selector: 'app-materias-inscritas',
   imports: [MatCardModule, MatButtonModule, MatChipsModule, MatDividerModule],

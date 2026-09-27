@@ -1,8 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard, estudianteGuard, invitadoGuard } from './core/auth/auth.guards';
 
-// loadComponent: cada pantalla se descarga solo cuando se visita
-// (lazy loading), así la carga inicial es más liviana.
 export const routes: Routes = [
   {
     path: 'login',

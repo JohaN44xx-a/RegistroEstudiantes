@@ -8,7 +8,7 @@ public class EstudianteRepository(RegistroEstudiantesDbContext contexto) : IEstu
 {
     public Task<Estudiante?> ObtenerPorIdAsync(int idEstudiante, CancellationToken ct = default)
         => contexto.Estudiantes
-                   .Include(e => e.Inscripciones) // el agregado siempre completo
+                   .Include(e => e.Inscripciones)
                    .FirstOrDefaultAsync(e => e.IdEstudiante == idEstudiante, ct);
 
     public Task<int?> ObtenerIdPorUsuarioAsync(int idUsuario, CancellationToken ct = default)

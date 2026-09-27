@@ -11,7 +11,6 @@ import { RegistroPublico } from '../../core/api/modelos';
 import { RegistrosService } from '../../core/api/registros.service';
 import { NotificacionService } from '../../shared/notificacion.service';
 
-/** Regla 8: ver en línea los registros de los demás estudiantes. */
 @Component({
   selector: 'app-registros',
   imports: [ReactiveFormsModule, MatCardModule, MatChipsModule, MatFormFieldModule, MatInputModule, MatProgressBarModule],
@@ -35,8 +34,6 @@ export class Registros {
 
   protected readonly busqueda = new FormControl('', { nonNullable: true });
 
-  // Caso clásico de RxJS: esperar a que el usuario deje de escribir
-  // (debounceTime) e ignorar valores repetidos (distinctUntilChanged).
   private readonly termino = toSignal(
     this.busqueda.valueChanges.pipe(
       debounceTime(300),

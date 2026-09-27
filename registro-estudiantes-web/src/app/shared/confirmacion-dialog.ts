@@ -14,7 +14,6 @@ export interface DatosConfirmacion {
   textoConfirmar: string;
 }
 
-/** Diálogo reutilizable. Devuelve true si el usuario confirma. */
 @Component({
   selector: 'app-confirmacion-dialog',
   imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule],

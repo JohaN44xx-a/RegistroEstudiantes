@@ -1,6 +1,3 @@
-// Contratos con la API. Cada interfaz es el espejo de un DTO de C#,
-// con las propiedades en camelCase (así las serializa ASP.NET Core).
-
 export interface CatalogoItem {
   id: number;
   nombre: string;
@@ -53,7 +50,6 @@ export interface MateriaInscrita {
   nombre: string;
   creditos: number;
   profesor: string;
-  /** Regla 9: la API solo expone el nombre de los compañeros. */
   companeros: string[];
 }
 
@@ -69,14 +65,12 @@ export interface MiRegistro {
   materias: MateriaInscrita[];
 }
 
-/** Regla 8: lo que se puede ver del registro de otro estudiante. */
 export interface RegistroPublico {
   estudiante: string;
   programa: string;
   materias: string[];
 }
 
-/** Formato de error que devuelve la API (RFC 9457). */
 export interface ProblemDetails {
   title?: string;
   detail?: string;

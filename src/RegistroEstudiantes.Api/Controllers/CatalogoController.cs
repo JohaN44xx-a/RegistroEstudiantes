@@ -3,10 +3,6 @@ using RegistroEstudiantes.Application.Consultas;
 
 namespace RegistroEstudiantes.Api.Controllers;
 
-/// <summary>
-/// Datos públicos que necesita el formulario de registro antes de que
-/// exista una sesión.
-/// </summary>
 [ApiController]
 [Route("api/catalogo")]
 public class CatalogoController(IConsultasRegistro consultas) : ControllerBase

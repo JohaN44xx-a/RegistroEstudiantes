@@ -10,11 +10,6 @@ import {
   RegistroCreado,
 } from '../api/modelos';
 
-/**
- * Dueño del estado de la sesión.
- * - Signals para el ESTADO (qué sesión hay ahora).
- * - Observables para las OPERACIONES (las peticiones HTTP).
- */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
@@ -22,12 +17,9 @@ export class AuthService {
   private readonly url = `${environment.apiUrl}/autenticacion`;
   private readonly claveAlmacenamiento = 'registro-estudiantes.sesion';
 
-  // Estado privado y escribible; hacia afuera, solo lectura. Mismo
-  // principio que la lista privada de inscripciones en el backend.
   private readonly _sesion = signal<IniciarSesionResponse | null>(this.leerSesionGuardada());
   readonly sesion = this._sesion.asReadonly();
 
-  // Estado derivado: se recalcula solo cuando cambia la sesión.
   readonly autenticado = computed(() => this._sesion() !== null);
   readonly token = computed(() => this._sesion()?.token ?? null);
   readonly nombre = computed(() => this._sesion()?.nombre ?? '');
@@ -50,7 +42,6 @@ export class AuthService {
     void this.router.navigate(['/login']);
   }
 
-  /** Pantalla inicial según el rol: el administrador no tiene "mi registro". */
   rutaInicio(): string {
     return this.esEstudiante() ? '/mi-registro' : '/registros';
   }
@@ -60,11 +51,7 @@ export class AuthService {
     this._sesion.set(sesion);
   }
 
-  /**
-   * Recupera la sesión al recargar la página. Solo revisa la expiración al
-   * arrancar; si el token vence durante el uso, lo detecta el
-   * errorInterceptor cuando la API responda 401.
-   */
+  // Solo valida la expiración al cargar; durante el uso la detecta el errorInterceptor (401).
   private leerSesionGuardada(): IniciarSesionResponse | null {
     try {
       const texto = localStorage.getItem(this.claveAlmacenamiento);
@@ -80,7 +67,6 @@ export class AuthService {
 
       return sesion;
     } catch {
-      // Valor dañado a mano o de una versión anterior: se descarta.
       localStorage.removeItem(this.claveAlmacenamiento);
       return null;
     }

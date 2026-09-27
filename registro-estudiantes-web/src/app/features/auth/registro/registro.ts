@@ -13,7 +13,6 @@ import { CatalogoService } from '../../../core/api/catalogo.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { NotificacionService } from '../../../shared/notificacion.service';
 
-/** La "C" del CRUD: registro en línea de un estudiante. */
 @Component({
   selector: 'app-registro',
   imports: [
@@ -40,9 +39,6 @@ export class Registro {
   protected readonly longitudMinimaContrasena = 8;
   protected readonly enviando = signal(false);
 
-  // forkJoin: las dos peticiones del catálogo salen EN PARALELO y se
-  // emite una sola vez cuando ambas terminan. toSignal lo convierte en
-  // estado para la plantilla (undefined mientras carga).
   protected readonly catalogos = toSignal(
     forkJoin({
       programas: this.catalogo.programas(),
@@ -73,8 +69,6 @@ export class Registro {
     const datos = this.formulario.getRawValue();
     this.enviando.set(true);
 
-    // switchMap encadena dos operaciones: primero registra y, cuando
-    // termina, inicia sesión con las mismas credenciales.
     this.auth
       .registrar(datos)
       .pipe(

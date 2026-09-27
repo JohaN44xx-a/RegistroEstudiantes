@@ -9,9 +9,7 @@ export class CatalogoService {
   private readonly http = inject(HttpClient);
   private readonly url = `${environment.apiUrl}/catalogo`;
 
-  // shareReplay(1): la primera suscripción hace la petición y las
-  // siguientes reciben el mismo resultado guardado. El catálogo casi no
-  // cambia, así que no tiene sentido pedirlo cada vez.
+  // El catálogo casi no cambia: se pide una vez y se comparte.
   private readonly programas$ = this.http
     .get<CatalogoItem[]>(`${this.url}/programas`)
     .pipe(shareReplay(1));

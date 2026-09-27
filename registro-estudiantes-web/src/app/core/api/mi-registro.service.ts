@@ -4,10 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ActualizarEstudianteRequest, MateriaDisponible, MiRegistro } from './modelos';
 
-/**
- * Operaciones del estudiante sobre SU registro. Nunca se envía el Id del
- * estudiante: la API lo toma del token.
- */
 @Injectable({ providedIn: 'root' })
 export class MiRegistroService {
   private readonly http = inject(HttpClient);

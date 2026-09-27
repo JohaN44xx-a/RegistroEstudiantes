@@ -10,10 +10,6 @@ using RegistroEstudiantes.Infrastructure.Seguridad;
 
 namespace RegistroEstudiantes.Infrastructure;
 
-/// <summary>
-/// Aquí se conecta cada puerto de Application con su adaptador.
-/// Program.cs solo llama a AddInfrastructure(configuration).
-/// </summary>
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
@@ -24,18 +20,16 @@ public static class DependencyInjection
 
         services.AddDbContext<RegistroEstudiantesDbContext>(o => o.UseSqlServer(cadenaConexion));
 
-        // Persistencia: una instancia por petición, igual que el DbContext.
         services.AddScoped<IUnidadDeTrabajo, UnidadDeTrabajo>();
         services.AddScoped<IEstudianteRepository, EstudianteRepository>();
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<ICatalogoRepository, CatalogoRepository>();
         services.AddScoped<IConsultasRegistro, ConsultasRegistro>();
 
-        // Seguridad: sin estado, una sola instancia para toda la app.
         services.AddSingleton<IHasherContrasenas, HasherContrasenas>();
         services.AddSingleton<IGeneradorToken, GeneradorTokenJwt>();
 
-        // La app no arranca si la configuración del JWT está incompleta.
+        // La API no arranca si la configuración del JWT es inválida.
         services.AddOptions<JwtOpciones>()
                 .Bind(configuration.GetSection(JwtOpciones.Seccion))
                 .Validate(o => !string.IsNullOrWhiteSpace(o.Emisor) && !string.IsNullOrWhiteSpace(o.Audiencia),

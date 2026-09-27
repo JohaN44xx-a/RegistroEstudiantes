@@ -36,7 +36,6 @@ export class Login {
   protected readonly enviando = signal(false);
   protected readonly mostrarUsuariosPrueba = !environment.production;
 
-  // Formulario tipado: getRawValue() devuelve { correoElectronico: string, contrasena: string }.
   protected readonly formulario = inject(NonNullableFormBuilder).group({
     correoElectronico: ['', [Validators.required, Validators.email]],
     contrasena: ['', Validators.required],

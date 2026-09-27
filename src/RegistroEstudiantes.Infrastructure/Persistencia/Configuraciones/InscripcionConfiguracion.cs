@@ -14,8 +14,7 @@ public class InscripcionConfiguracion : IEntityTypeConfiguration<Inscripcion>
 
         builder.Property(i => i.FechaInscripcion).HasColumnType("datetime2(0)");
 
-        // Refleja la FK compuesta del script: la pareja (materia, profesor)
-        // debe existir tal cual en Materia.
+        // FK compuesta del script: la pareja (materia, profesor) debe existir en Materia.
         builder.HasOne<MateriaDb>().WithMany()
                .HasForeignKey(i => new { i.IdMateria, i.IdProfesor })
                .HasPrincipalKey(m => new { m.IdMateria, m.IdProfesor })

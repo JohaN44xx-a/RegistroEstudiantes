@@ -4,10 +4,6 @@ using RegistroEstudiantes.Application.Consultas;
 
 namespace RegistroEstudiantes.Api.Controllers;
 
-/// <summary>
-/// Regla 8: cualquier usuario con sesión puede ver los registros de los
-/// demás estudiantes (solo nombre, programa y materias).
-/// </summary>
 [ApiController]
 [Route("api/registros")]
 [Authorize]

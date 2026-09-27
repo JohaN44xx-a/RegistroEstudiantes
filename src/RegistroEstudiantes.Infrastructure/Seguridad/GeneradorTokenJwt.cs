@@ -8,11 +8,6 @@ using RegistroEstudiantes.Application.Common;
 
 namespace RegistroEstudiantes.Infrastructure.Seguridad;
 
-/// <summary>
-/// Adaptador del puerto IGeneradorToken. Firma el token con HMAC-SHA256
-/// usando la clave secreta: quien no tenga la clave no puede fabricar ni
-/// modificar un token válido.
-/// </summary>
 public class GeneradorTokenJwt(IOptions<JwtOpciones> opciones) : IGeneradorToken
 {
     private readonly JwtOpciones _opciones = opciones.Value;

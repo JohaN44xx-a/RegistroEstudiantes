@@ -5,10 +5,6 @@ using RegistroEstudiantes.Infrastructure.Persistencia;
 
 namespace RegistroEstudiantes.Infrastructure.Consultas;
 
-/// <summary>
-/// Lecturas directas con proyección a DTO. AsNoTracking porque nada de
-/// esto se va a modificar: EF Core no necesita vigilar los cambios.
-/// </summary>
 public class ConsultasRegistro(RegistroEstudiantesDbContext contexto) : IConsultasRegistro
 {
     public async Task<IReadOnlyList<CatalogoItemDto>> ListarProgramasAsync(CancellationToken ct = default)
@@ -80,7 +76,7 @@ public class ConsultasRegistro(RegistroEstudiantesDbContext contexto) : IConsult
 
         var idsMaterias = materias.Select(m => m.IdMateria).ToList();
 
-        // Regla 9: de los compañeros solo se trae el nombre.
+        // Regla 9: de los compañeros solo se proyecta el nombre.
         var companeros = await (from i in contexto.Set<Inscripcion>().AsNoTracking()
                                 join e in contexto.Estudiantes on i.IdEstudiante equals e.IdEstudiante
                                 where idsMaterias.Contains(i.IdMateria) && i.IdEstudiante != idEstudiante

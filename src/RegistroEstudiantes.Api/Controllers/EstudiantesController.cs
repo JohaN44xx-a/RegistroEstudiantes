@@ -5,7 +5,6 @@ using RegistroEstudiantes.Domain.Usuarios;
 
 namespace RegistroEstudiantes.Api.Controllers;
 
-/// <summary>Operaciones de administración sobre cualquier estudiante.</summary>
 [ApiController]
 [Route("api/estudiantes")]
 [Authorize(Roles = Roles.Administrador)]
