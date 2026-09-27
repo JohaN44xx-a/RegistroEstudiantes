@@ -1,0 +1,30 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+}
+
+.datos {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1rem;
+  margin: 1rem 0;
+
+  dt {
+    font-weight: 600;
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.botones {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.peligro {
+  color: #b3261e;
+}

@@ -1,0 +1,46 @@
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.progreso {
+  position: sticky;
+  top: 64px;
+  z-index: 5;
+}
+
+.encabezado {
+  h1 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+    opacity: 0.75;
+  }
+}
+
+.columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.columna {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+}
+
+@media (max-width: 900px) {
+  .columnas {
+    grid-template-columns: 1fr;
+  }
+}

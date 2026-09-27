@@ -1,0 +1,35 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Materias disponibles</mat-card-title>
+    <mat-card-subtitle>Plan de estudios de tu programa · cada materia vale 3 créditos</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    @for (opcion of opciones(); track opcion.materia.idMateria; let ultima = $last) {
+      <article class="opcion" [class.bloqueada]="opcion.motivoBloqueo">
+        <div>
+          <h3>{{ opcion.materia.nombre }}</h3>
+          <p class="detalle">{{ opcion.materia.profesor }} · {{ opcion.materia.creditos }} créditos</p>
+          @if (opcion.motivoBloqueo) {
+            <p class="motivo">{{ opcion.motivoBloqueo }}</p>
+          }
+        </div>
+
+        <button
+          mat-stroked-button
+          type="button"
+          [disabled]="deshabilitado() || opcion.motivoBloqueo"
+          (click)="inscribir.emit(opcion.materia.idMateria)"
+        >
+          Inscribir
+        </button>
+      </article>
+
+      @if (!ultima) {
+        <mat-divider />
+      }
+    } @empty {
+      <p class="detalle">Ya inscribiste todas las materias de tu plan.</p>
+    }
+  </mat-card-content>
+</mat-card>

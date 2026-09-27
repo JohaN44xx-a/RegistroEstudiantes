@@ -1,0 +1,21 @@
+@if (auth.autenticado()) {
+  <mat-toolbar class="barra">
+    <span class="marca">Registro de Estudiantes</span>
+
+    <nav class="navegacion">
+      @if (auth.esEstudiante()) {
+        <a mat-button routerLink="/mi-registro" routerLinkActive="activo">Mi registro</a>
+      }
+      <a mat-button routerLink="/registros" routerLinkActive="activo">Registros</a>
+    </nav>
+
+    <span class="espaciador"></span>
+
+    <span class="usuario">{{ auth.nombre() }}</span>
+    <button mat-stroked-button type="button" (click)="auth.cerrarSesion()">Cerrar sesión</button>
+  </mat-toolbar>
+}
+
+<main class="contenido">
+  <router-outlet />
+</main>

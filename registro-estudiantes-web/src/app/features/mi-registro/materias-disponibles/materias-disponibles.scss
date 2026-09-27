@@ -1,0 +1,27 @@
+.opcion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 0;
+
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+.bloqueada h3 {
+  opacity: 0.6;
+}
+
+.detalle {
+  margin: 0.2rem 0 0;
+  opacity: 0.75;
+}
+
+.motivo {
+  margin: 0.2rem 0 0;
+  font-size: 0.85rem;
+  color: #b3261e;
+}

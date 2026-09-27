@@ -1,0 +1,27 @@
+.materia {
+  padding: 1rem 0;
+}
+
+.cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.detalle,
+.etiqueta,
+.vacio {
+  margin: 0.25rem 0;
+  opacity: 0.75;
+}
+
+.etiqueta {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}

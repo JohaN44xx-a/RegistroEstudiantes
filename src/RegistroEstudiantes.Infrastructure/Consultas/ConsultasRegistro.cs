@@ -59,6 +59,7 @@ public class ConsultasRegistro(RegistroEstudiantesDbContext contexto) : IConsult
                            {
                                e.IdEstudiante,
                                e.Nombre,
+                               e.IdTipoIdentificacion,
                                TipoIdentificacion = t.Nombre,
                                e.NumeroIdentificacion,
                                Programa = pr.Nombre,
@@ -93,9 +94,9 @@ public class ConsultasRegistro(RegistroEstudiantesDbContext contexto) : IConsult
                 companeros.Where(c => c.IdMateria == m.IdMateria).Select(c => c.Nombre).ToList()))
             .ToList();
 
-        return new MiRegistroDto(datos.IdEstudiante, datos.Nombre, datos.TipoIdentificacion,
-                                 datos.NumeroIdentificacion, datos.Programa, datos.CorreoElectronico,
-                                 materiasDto.Sum(m => m.Creditos), materiasDto);
+        return new MiRegistroDto(datos.IdEstudiante, datos.Nombre, datos.IdTipoIdentificacion,
+                                 datos.TipoIdentificacion, datos.NumeroIdentificacion, datos.Programa,
+                                 datos.CorreoElectronico, materiasDto.Sum(m => m.Creditos), materiasDto);
     }
 
     public async Task<IReadOnlyList<RegistroPublicoDto>> ListarRegistrosAsync(CancellationToken ct = default)

@@ -16,9 +16,10 @@ public record MateriaDisponibleDto(int IdMateria, string Nombre, int Creditos, i
 public record MateriaInscritaDto(int IdMateria, string Nombre, int Creditos, string Profesor,
                                  IReadOnlyList<string> Companeros);
 
-public record MiRegistroDto(int IdEstudiante, string Nombre, string TipoIdentificacion,
-                            string NumeroIdentificacion, string Programa, string CorreoElectronico,
-                            int TotalCreditos, IReadOnlyList<MateriaInscritaDto> Materias);
+public record MiRegistroDto(int IdEstudiante, string Nombre, int IdTipoIdentificacion,
+                            string TipoIdentificacion, string NumeroIdentificacion, string Programa,
+                            string CorreoElectronico, int TotalCreditos,
+                            IReadOnlyList<MateriaInscritaDto> Materias);
 
 /// <summary>
 /// Regla 8: lo que un estudiante puede ver del registro de otro.

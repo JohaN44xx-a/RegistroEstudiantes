@@ -1,0 +1,35 @@
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.encabezado {
+  h1 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+    opacity: 0.75;
+  }
+}
+
+.buscador {
+  width: 100%;
+  max-width: 480px;
+}
+
+.grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+mat-card-content {
+  padding-top: 0.5rem;
+}
+
+.vacio {
+  opacity: 0.75;
+}

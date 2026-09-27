@@ -1,0 +1,46 @@
+<section class="pagina">
+  @if (procesando()) {
+    <mat-progress-bar mode="indeterminate" class="progreso" />
+  }
+
+  @if (datos(); as datos) {
+    <header class="encabezado">
+      <h1>Hola, {{ datos.registro.nombre }}</h1>
+      <p>{{ datos.registro.programa }}</p>
+    </header>
+
+    <div class="columnas">
+      <div class="columna">
+        <app-materias-inscritas
+          [materias]="datos.registro.materias"
+          [totalCreditos]="datos.registro.totalCreditos"
+          [deshabilitado]="procesando()"
+          (cancelar)="cancelar($event)"
+        />
+
+        <app-datos-estudiante
+          [registro]="datos.registro"
+          [tiposIdentificacion]="tiposIdentificacion()"
+          [deshabilitado]="procesando()"
+          (guardar)="guardarDatos($event)"
+          (eliminar)="eliminarCuenta()"
+        />
+      </div>
+
+      <div class="columna">
+        <app-materias-disponibles
+          [materias]="datos.disponibles"
+          [deshabilitado]="procesando()"
+          (inscribir)="inscribir($event)"
+        />
+      </div>
+    </div>
+  } @else if (datos() === undefined) {
+    <mat-progress-bar mode="indeterminate" />
+  } @else {
+    <div class="error">
+      <p>No se pudo cargar tu registro.</p>
+      <button mat-stroked-button type="button" (click)="reintentar()">Reintentar</button>
+    </div>
+  }
+</section>

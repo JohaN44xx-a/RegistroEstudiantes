@@ -1,0 +1,36 @@
+.acceso {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+}
+
+.tarjeta {
+  width: 100%;
+  max-width: 620px;
+  overflow: hidden;
+}
+
+.formulario {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+  padding-top: 1rem;
+}
+
+.completo {
+  grid-column: 1 / -1;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+@media (max-width: 600px) {
+  .formulario {
+    grid-template-columns: 1fr;
+  }
+}

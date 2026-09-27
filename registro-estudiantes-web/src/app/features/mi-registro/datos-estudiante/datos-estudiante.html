@@ -1,0 +1,57 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Mis datos</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (editando()) {
+      <form [formGroup]="formulario" (ngSubmit)="enviar()" class="formulario">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre completo</mat-label>
+          <input matInput formControlName="nombre" />
+          <mat-error>El nombre es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Tipo de documento</mat-label>
+          <mat-select formControlName="idTipoIdentificacion">
+            @for (tipo of tiposIdentificacion(); track tipo.id) {
+              <mat-option [value]="tipo.id">{{ tipo.nombre }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Número de documento</mat-label>
+          <input matInput formControlName="numeroIdentificacion" />
+          <mat-error>El número de documento es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <div class="botones">
+          <button mat-button type="button" (click)="cancelarEdicion()">Cancelar</button>
+          <button mat-flat-button type="submit" [disabled]="deshabilitado()">Guardar</button>
+        </div>
+      </form>
+    } @else {
+      <dl class="datos">
+        <dt>Nombre</dt>
+        <dd>{{ registro().nombre }}</dd>
+        <dt>Documento</dt>
+        <dd>{{ registro().tipoIdentificacion }} {{ registro().numeroIdentificacion }}</dd>
+        <dt>Correo</dt>
+        <dd>{{ registro().correoElectronico }}</dd>
+        <dt>Programa</dt>
+        <dd>{{ registro().programa }}</dd>
+      </dl>
+
+      <div class="botones">
+        <button mat-button type="button" class="peligro" [disabled]="deshabilitado()" (click)="eliminar.emit()">
+          Eliminar mi cuenta
+        </button>
+        <button mat-stroked-button type="button" [disabled]="deshabilitado()" (click)="editar()">
+          Editar datos
+        </button>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>

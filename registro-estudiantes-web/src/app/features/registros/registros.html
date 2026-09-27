@@ -1,0 +1,39 @@
+<section class="pagina">
+  <header class="encabezado">
+    <h1>Registros de estudiantes</h1>
+    <p>Consulta en qué materias está inscrito cada estudiante.</p>
+  </header>
+
+  <mat-form-field appearance="outline" class="buscador">
+    <mat-label>Buscar por estudiante, programa o materia</mat-label>
+    <input matInput [formControl]="busqueda" />
+  </mat-form-field>
+
+  @if (registros() === undefined) {
+    <mat-progress-bar mode="indeterminate" />
+  } @else {
+    <div class="grilla">
+      @for (registro of filtrados(); track $index) {
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{ registro.estudiante }}</mat-card-title>
+            <mat-card-subtitle>{{ registro.programa }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            @if (registro.materias.length > 0) {
+              <mat-chip-set aria-label="Materias inscritas">
+                @for (materia of registro.materias; track materia) {
+                  <mat-chip>{{ materia }}</mat-chip>
+                }
+              </mat-chip-set>
+            } @else {
+              <p class="vacio">Sin materias inscritas.</p>
+            }
+          </mat-card-content>
+        </mat-card>
+      } @empty {
+        <p class="vacio">No hay registros que coincidan con la búsqueda.</p>
+      }
+    </div>
+  }
+</section>

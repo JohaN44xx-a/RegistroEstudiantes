@@ -1,0 +1,41 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Mis materias</mat-card-title>
+    <mat-card-subtitle>
+      {{ materias().length }} de {{ maximoMaterias }} materias · {{ totalCreditos() }} créditos
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    @for (materia of materias(); track materia.idMateria; let ultima = $last) {
+      <article class="materia">
+        <div class="cabecera">
+          <div>
+            <h3>{{ materia.nombre }}</h3>
+            <p class="detalle">{{ materia.profesor }} · {{ materia.creditos }} créditos</p>
+          </div>
+          <button mat-button type="button" [disabled]="deshabilitado()" (click)="cancelar.emit(materia.idMateria)">
+            Cancelar
+          </button>
+        </div>
+
+        <p class="etiqueta">Compañeros en esta clase</p>
+        @if (materia.companeros.length > 0) {
+          <mat-chip-set aria-label="Compañeros de clase">
+            @for (companero of materia.companeros; track $index) {
+              <mat-chip>{{ companero }}</mat-chip>
+            }
+          </mat-chip-set>
+        } @else {
+          <p class="vacio">Aún no hay otros estudiantes inscritos.</p>
+        }
+      </article>
+
+      @if (!ultima) {
+        <mat-divider />
+      }
+    } @empty {
+      <p class="vacio">Todavía no tienes materias. Elige hasta {{ maximoMaterias }} en "Materias disponibles".</p>
+    }
+  </mat-card-content>
+</mat-card>
