@@ -1,38 +1,91 @@
-.acceso {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  padding-top: 3rem;
-}
+.encabezado {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
 
-.tarjeta {
-  width: 100%;
-  max-width: 420px;
-  overflow: hidden;
+  h2 {
+    font-size: 1.75rem;
+  }
 }
 
 .formulario {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  padding-top: 1rem;
 }
 
-.acciones {
+.prefijo {
+  margin: 0 0.25rem 0 0.75rem;
+  color: var(--rel-tinta-suave);
+}
+
+.enviar {
+  height: 48px;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+.alterno {
+  margin-top: 1.25rem;
+  text-align: center;
+  color: var(--rel-tinta-suave);
+
+  a {
+    color: var(--rel-pizarra);
+    font-weight: 600;
+  }
+}
+
+.prueba {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed var(--rel-linea);
+
+  h3 {
+    font-size: 0.95rem;
+  }
+
+  .detalle {
+    margin: 0.2rem 0 0.9rem;
+  }
+}
+
+.usuarios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.5rem;
+}
+
+.usuario {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-}
+  gap: 0.6rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--rel-linea);
+  border-radius: 12px;
+  background: #ffffff;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
 
-.usuarios-prueba {
-  max-width: 420px;
-  font-size: 0.85rem;
-  opacity: 0.8;
-  text-align: center;
+  &:hover {
+    border-color: var(--rel-pizarra);
+    background: var(--rel-pizarra-suave);
+  }
 
-  p {
-    margin: 0.25rem 0;
+  .texto {
+    display: grid;
+    font-size: 0.8rem;
+    line-height: 1.3;
+    color: var(--rel-tinta-suave);
+  }
+
+  strong {
+    color: var(--rel-tinta);
+    font-size: 0.85rem;
   }
 }

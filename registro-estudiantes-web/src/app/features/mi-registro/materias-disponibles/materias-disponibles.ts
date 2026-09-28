@@ -1,31 +1,37 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
 import { MateriaDisponible } from '../../../core/api/modelos';
 import { MAXIMO_MATERIAS } from '../../../core/api/reglas';
+import { EstadoVacio } from '../../../shared/estado-vacio';
+import { InicialesPipe } from '../../../shared/iniciales.pipe';
+import { PaletaProfesores } from '../../../shared/paleta-profesores';
 
 interface OpcionMateria {
   materia: MateriaDisponible;
-  motivoBloqueo: string | null;
+  profesorRepetido: boolean;
 }
 
 @Component({
   selector: 'app-materias-disponibles',
-  imports: [MatCardModule, MatButtonModule, MatDividerModule],
+  imports: [MatButtonModule, EstadoVacio, InicialesPipe],
   templateUrl: './materias-disponibles.html',
   styleUrl: './materias-disponibles.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MateriasDisponibles {
   readonly materias = input.required<MateriaDisponible[]>();
+  readonly paleta = input.required<PaletaProfesores>();
   readonly deshabilitado = input(false);
 
   readonly inscribir = output<number>();
 
   private readonly inscritas = computed(() => this.materias().filter((m) => m.inscrita));
-  private readonly cupoLleno = computed(() => this.inscritas().length >= MAXIMO_MATERIAS);
-  private readonly profesoresOcupados = computed(() => new Set(this.inscritas().map((m) => m.idProfesor)));
+  private readonly profesoresOcupados = computed(
+    () => new Set(this.inscritas().map((m) => m.idProfesor)),
+  );
+
+  protected readonly maximoMaterias = MAXIMO_MATERIAS;
+  protected readonly cupoLleno = computed(() => this.inscritas().length >= MAXIMO_MATERIAS);
 
   // Solo guía visual: deshabilita y explica. La regla la aplica la API.
   protected readonly opciones = computed<OpcionMateria[]>(() =>
@@ -33,11 +39,7 @@ export class MateriasDisponibles {
       .filter((materia) => !materia.inscrita)
       .map((materia) => ({
         materia,
-        motivoBloqueo: this.cupoLleno()
-          ? `Ya tienes ${MAXIMO_MATERIAS} materias inscritas.`
-          : this.profesoresOcupados().has(materia.idProfesor)
-            ? `Ya tienes una materia con ${materia.profesor}.`
-            : null,
+        profesorRepetido: this.profesoresOcupados().has(materia.idProfesor),
       })),
   );
 }

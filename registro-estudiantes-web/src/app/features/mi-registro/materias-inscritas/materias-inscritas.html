@@ -1,41 +1,57 @@
-<mat-card appearance="outlined">
-  <mat-card-header>
-    <mat-card-title>Mis materias</mat-card-title>
-    <mat-card-subtitle>
-      {{ materias().length }} de {{ maximoMaterias }} materias · {{ totalCreditos() }} créditos
-    </mat-card-subtitle>
-  </mat-card-header>
+<section class="panel" aria-labelledby="titulo-inscritas">
+  <header class="panel__cabecera">
+    <div>
+      <h2 id="titulo-inscritas">Mis materias</h2>
+      <p class="detalle">Por privacidad, de tus compañeros solo ves el nombre.</p>
+    </div>
+    <span class="insignia">{{ materias().length }} de {{ maximoMaterias }}</span>
+  </header>
 
-  <mat-card-content>
-    @for (materia of materias(); track materia.idMateria; let ultima = $last) {
-      <article class="materia">
-        <div class="cabecera">
-          <div>
-            <h3>{{ materia.nombre }}</h3>
-            <p class="detalle">{{ materia.profesor }} · {{ materia.creditos }} créditos</p>
-          </div>
-          <button mat-button type="button" [disabled]="deshabilitado()" (click)="cancelar.emit(materia.idMateria)">
-            Cancelar
-          </button>
+  @for (materia of materias(); track materia.idMateria) {
+    <article class="materia" [attr.data-tono]="paleta().get(materia.profesor) ?? 0">
+      <div class="cabecera">
+        <span class="avatar" aria-hidden="true">{{ materia.profesor | iniciales }}</span>
+        <div class="titulo">
+          <h3>{{ materia.nombre }}</h3>
+          <p class="detalle">{{ materia.profesor }}</p>
         </div>
+        <span class="insignia">{{ materia.creditos }} créditos</span>
+        <button
+          mat-icon-button
+          type="button"
+          matTooltip="Cancelar inscripción"
+          [attr.aria-label]="'Cancelar inscripción de ' + materia.nombre"
+          [disabled]="deshabilitado()"
+          (click)="cancelar.emit(materia.idMateria)"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </div>
 
-        <p class="etiqueta">Compañeros en esta clase</p>
+      <div class="companeros">
         @if (materia.companeros.length > 0) {
-          <mat-chip-set aria-label="Compañeros de clase">
+          <p class="etiqueta">
+            {{ materia.companeros.length === 1 ? '1 compañero' : materia.companeros.length + ' compañeros' }}
+            en esta clase
+          </p>
+          <ul>
             @for (companero of materia.companeros; track $index) {
-              <mat-chip>{{ companero }}</mat-chip>
+              <li class="persona">
+                <span class="avatar avatar--pequeno" aria-hidden="true">{{ companero | iniciales }}</span>
+                {{ companero }}
+              </li>
             }
-          </mat-chip-set>
+          </ul>
         } @else {
-          <p class="vacio">Aún no hay otros estudiantes inscritos.</p>
+          <p class="etiqueta">Eres el primero en esta clase.</p>
         }
-      </article>
-
-      @if (!ultima) {
-        <mat-divider />
-      }
-    } @empty {
-      <p class="vacio">Todavía no tienes materias. Elige hasta {{ maximoMaterias }} en "Materias disponibles".</p>
-    }
-  </mat-card-content>
-</mat-card>
+      </div>
+    </article>
+  } @empty {
+    <app-estado-vacio
+      imagen="ilustraciones/sin-materias.svg"
+      titulo="Tu semestre está en blanco"
+      texto="Elige hasta 3 materias en Materias disponibles, cada una con un profesor distinto."
+    />
+  }
+</section>

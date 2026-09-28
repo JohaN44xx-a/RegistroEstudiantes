@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,14 +9,25 @@ import { MiRegistroService } from '../../core/api/mi-registro.service';
 import { ActualizarEstudianteRequest } from '../../core/api/modelos';
 import { AuthService } from '../../core/auth/auth.service';
 import { ConfirmacionDialog, DatosConfirmacion } from '../../shared/confirmacion-dialog';
+import { EstadoVacio } from '../../shared/estado-vacio';
 import { NotificacionService } from '../../shared/notificacion.service';
+import { crearPaleta } from '../../shared/paleta-profesores';
+import { CupoSemestre } from './cupo-semestre/cupo-semestre';
 import { DatosEstudiante } from './datos-estudiante/datos-estudiante';
 import { MateriasDisponibles } from './materias-disponibles/materias-disponibles';
 import { MateriasInscritas } from './materias-inscritas/materias-inscritas';
 
 @Component({
   selector: 'app-mi-registro',
-  imports: [MatProgressBarModule, MatButtonModule, DatosEstudiante, MateriasInscritas, MateriasDisponibles],
+  imports: [
+    MatProgressBarModule,
+    MatButtonModule,
+    CupoSemestre,
+    DatosEstudiante,
+    MateriasInscritas,
+    MateriasDisponibles,
+    EstadoVacio,
+  ],
   templateUrl: './mi-registro.html',
   styleUrl: './mi-registro.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,6 +59,11 @@ export class MiRegistroPagina {
       ),
     ),
   );
+
+  // El mismo color para cada profesor en el cupo, en mis materias y en las disponibles.
+  protected readonly paleta = computed(() => crearPaleta(this.datos()?.disponibles ?? []));
+
+  protected readonly primerNombre = computed(() => this.datos()?.registro.nombre.split(' ')[0] ?? '');
 
   protected readonly tiposIdentificacion = toSignal(this.catalogo.tiposIdentificacion(), {
     initialValue: [],

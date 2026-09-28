@@ -4,16 +4,28 @@
   }
 
   @if (datos(); as datos) {
-    <header class="encabezado">
-      <h1>Hola, {{ datos.registro.nombre }}</h1>
-      <p>{{ datos.registro.programa }}</p>
+    <header class="portada">
+      <div class="saludo">
+        <p class="programa">
+          <span class="material-symbols-outlined" aria-hidden="true">school</span>
+          {{ datos.registro.programa }}
+        </p>
+        <h1>Hola, {{ primerNombre() }}</h1>
+        <p class="indicacion">Elige hasta 3 materias de tu plan, cada una con un profesor distinto.</p>
+      </div>
+
+      <app-cupo-semestre
+        [materias]="datos.registro.materias"
+        [totalCreditos]="datos.registro.totalCreditos"
+        [paleta]="paleta()"
+      />
     </header>
 
     <div class="columnas">
       <div class="columna">
         <app-materias-inscritas
           [materias]="datos.registro.materias"
-          [totalCreditos]="datos.registro.totalCreditos"
+          [paleta]="paleta()"
           [deshabilitado]="procesando()"
           (cancelar)="cancelar($event)"
         />
@@ -27,20 +39,30 @@
         />
       </div>
 
-      <div class="columna">
-        <app-materias-disponibles
-          [materias]="datos.disponibles"
-          [deshabilitado]="procesando()"
-          (inscribir)="inscribir($event)"
-        />
-      </div>
+      <app-materias-disponibles
+        [materias]="datos.disponibles"
+        [paleta]="paleta()"
+        [deshabilitado]="procesando()"
+        (inscribir)="inscribir($event)"
+      />
     </div>
   } @else if (datos() === undefined) {
-    <mat-progress-bar mode="indeterminate" />
+    <div class="cargando" aria-busy="true" aria-label="Cargando tu registro">
+      <div class="esqueleto esqueleto--portada"></div>
+      <div class="columnas">
+        <div class="esqueleto esqueleto--columna"></div>
+        <div class="esqueleto esqueleto--columna"></div>
+      </div>
+    </div>
   } @else {
-    <div class="error">
-      <p>No se pudo cargar tu registro.</p>
-      <button mat-stroked-button type="button" (click)="reintentar()">Reintentar</button>
+    <div class="panel">
+      <app-estado-vacio
+        imagen="ilustraciones/sin-resultados.svg"
+        titulo="No se pudo cargar tu registro"
+        texto="Verifica que la API esté en ejecución y vuelve a intentarlo."
+      >
+        <button mat-flat-button type="button" (click)="reintentar()">Reintentar</button>
+      </app-estado-vacio>
     </div>
   }
 </section>

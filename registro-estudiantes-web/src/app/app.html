@@ -1,21 +1,39 @@
 @if (auth.autenticado()) {
-  <mat-toolbar class="barra">
-    <span class="marca">Registro de Estudiantes</span>
+  <header class="barra">
+    <a class="marca" [routerLink]="auth.rutaInicio()" aria-label="Ir al inicio">
+      <img src="logo.svg" alt="" width="32" height="32" />
+      <span>Registro de Estudiantes</span>
+    </a>
 
-    <nav class="navegacion">
+    <nav class="navegacion" aria-label="Principal">
       @if (auth.esEstudiante()) {
-        <a mat-button routerLink="/mi-registro" routerLinkActive="activo">Mi registro</a>
+        <a routerLink="/mi-registro" routerLinkActive="activo" ariaCurrentWhenActive="page">
+          <span class="material-symbols-outlined" aria-hidden="true">school</span>
+          Mi registro
+        </a>
       }
-      <a mat-button routerLink="/registros" routerLinkActive="activo">Registros</a>
+      <a routerLink="/registros" routerLinkActive="activo" ariaCurrentWhenActive="page">
+        <span class="material-symbols-outlined" aria-hidden="true">groups</span>
+        Registros
+      </a>
     </nav>
 
-    <span class="espaciador"></span>
-
-    <span class="usuario">{{ auth.nombre() }}</span>
-    <button mat-stroked-button type="button" (click)="auth.cerrarSesion()">Cerrar sesión</button>
-  </mat-toolbar>
+    <div class="usuario">
+      <span class="avatar avatar--pequeno" aria-hidden="true">{{ auth.nombre() | iniciales }}</span>
+      <span class="nombre">{{ auth.nombre() }}</span>
+      <button
+        mat-icon-button
+        type="button"
+        matTooltip="Cerrar sesión"
+        aria-label="Cerrar sesión"
+        (click)="auth.cerrarSesion()"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+      </button>
+    </div>
+  </header>
 }
 
-<main class="contenido">
+<main class="contenido" [class.contenido--completo]="!auth.autenticado()">
   <router-outlet />
 </main>

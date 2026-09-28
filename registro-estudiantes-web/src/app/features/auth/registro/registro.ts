@@ -3,27 +3,25 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { catchError, finalize, forkJoin, of, switchMap } from 'rxjs';
 import { CatalogoService } from '../../../core/api/catalogo.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { NotificacionService } from '../../../shared/notificacion.service';
+import { PanelAcceso } from '../../../shared/panel-acceso';
 
 @Component({
   selector: 'app-registro',
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    MatProgressBarModule,
+    PanelAcceso,
   ],
   templateUrl: './registro.html',
   styleUrl: './registro.scss',
@@ -38,6 +36,7 @@ export class Registro {
 
   protected readonly longitudMinimaContrasena = 8;
   protected readonly enviando = signal(false);
+  protected readonly mostrarContrasena = signal(false);
 
   protected readonly catalogos = toSignal(
     forkJoin({

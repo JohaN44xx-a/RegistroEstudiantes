@@ -1,35 +1,56 @@
-<mat-card appearance="outlined">
-  <mat-card-header>
-    <mat-card-title>Materias disponibles</mat-card-title>
-    <mat-card-subtitle>Plan de estudios de tu programa · cada materia vale 3 créditos</mat-card-subtitle>
-  </mat-card-header>
+<section class="panel" aria-labelledby="titulo-disponibles">
+  <header class="panel__cabecera">
+    <div>
+      <h2 id="titulo-disponibles">Materias disponibles</h2>
+      <p class="detalle">Plan de estudios de tu programa. Cada materia vale 3 créditos.</p>
+    </div>
+  </header>
 
-  <mat-card-content>
-    @for (opcion of opciones(); track opcion.materia.idMateria; let ultima = $last) {
-      <article class="opcion" [class.bloqueada]="opcion.motivoBloqueo">
-        <div>
-          <h3>{{ opcion.materia.nombre }}</h3>
-          <p class="detalle">{{ opcion.materia.profesor }} · {{ opcion.materia.creditos }} créditos</p>
-          @if (opcion.motivoBloqueo) {
-            <p class="motivo">{{ opcion.motivoBloqueo }}</p>
-          }
-        </div>
+  @if (cupoLleno()) {
+    <p class="aviso" role="status">
+      <span class="material-symbols-outlined" aria-hidden="true">task_alt</span>
+      Completaste tus {{ maximoMaterias }} materias. Para cambiar una, cancélala primero en Mis materias.
+    </p>
+  }
 
-        <button
-          mat-stroked-button
-          type="button"
-          [disabled]="deshabilitado() || opcion.motivoBloqueo"
-          (click)="inscribir.emit(opcion.materia.idMateria)"
+  @if (opciones().length > 0) {
+    <ul class="lista">
+      @for (opcion of opciones(); track opcion.materia.idMateria) {
+        <li
+          class="opcion"
+          [class.opcion--bloqueada]="opcion.profesorRepetido || cupoLleno()"
+          [attr.data-tono]="paleta().get(opcion.materia.profesor) ?? 0"
         >
-          Inscribir
-        </button>
-      </article>
+          <span class="avatar" aria-hidden="true">{{ opcion.materia.profesor | iniciales }}</span>
 
-      @if (!ultima) {
-        <mat-divider />
+          <div class="cuerpo">
+            <h3>{{ opcion.materia.nombre }}</h3>
+            <p class="detalle">{{ opcion.materia.profesor }}</p>
+            @if (opcion.profesorRepetido) {
+              <p class="motivo">
+                <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+                Ya tienes una materia con {{ opcion.materia.profesor }}.
+              </p>
+            }
+          </div>
+
+          <button
+            mat-stroked-button
+            type="button"
+            [disabled]="deshabilitado() || opcion.profesorRepetido || cupoLleno()"
+            [attr.aria-label]="'Inscribir ' + opcion.materia.nombre"
+            (click)="inscribir.emit(opcion.materia.idMateria)"
+          >
+            Inscribir
+          </button>
+        </li>
       }
-    } @empty {
-      <p class="detalle">Ya inscribiste todas las materias de tu plan.</p>
-    }
-  </mat-card-content>
-</mat-card>
+    </ul>
+  } @else {
+    <app-estado-vacio
+      imagen="ilustraciones/sin-materias.svg"
+      titulo="No quedan materias por inscribir"
+      texto="Ya inscribiste todas las materias del plan de tu programa."
+    />
+  }
+</section>

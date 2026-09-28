@@ -1,35 +1,104 @@
 .pagina {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .encabezado {
-  h1 {
-    margin: 0;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 2rem;
 
-  p {
-    margin: 0.25rem 0 0;
-    opacity: 0.75;
+  .detalle {
+    max-width: 52ch;
+    margin-top: 0.4rem;
+    font-size: 0.95rem;
   }
 }
 
 .buscador {
-  width: 100%;
-  max-width: 480px;
+  width: min(100%, 420px);
+}
+
+.prefijo {
+  margin: 0 0.25rem 0 0.75rem;
+  color: var(--rel-tinta-suave);
+}
+
+.conteo {
+  font-size: 0.9rem;
+  color: var(--rel-tinta-suave);
 }
 
 .grilla {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: 1rem;
 }
 
-mat-card-content {
-  padding-top: 0.5rem;
+.registro {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.1rem;
+  border: 1px solid var(--rel-linea);
+  border-radius: 18px;
+  background: #ffffff;
+
+  > header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+  }
+}
+
+.identidad {
+  flex: 1;
+  min-width: 0;
+}
+
+.materias {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.65rem;
+    border-radius: 10px;
+    background: var(--rel-papel);
+    font-size: 0.9rem;
+  }
+
+  .material-symbols-outlined {
+    font-size: 1.05rem;
+    color: var(--rel-pizarra);
+  }
+}
+
+.sin-materias {
+  padding: 0.6rem 0.65rem;
+  border: 1.5px dashed var(--rel-linea);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: var(--rel-tinta-suave);
 }
 
 .vacio {
-  opacity: 0.75;
+  grid-column: 1 / -1;
+}
+
+.tarjeta-cargando {
+  height: 190px;
+  border-radius: 18px;
 }

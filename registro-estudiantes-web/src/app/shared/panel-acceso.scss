@@ -1,0 +1,68 @@
+:host {
+  display: grid;
+  grid-template-columns: minmax(340px, 5fr) 7fr;
+  min-height: 100vh;
+}
+
+.lateral {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  color: #ffffff;
+  background-color: var(--rel-pizarra);
+  // Puntos de cuaderno sobre la pizarra.
+  background-image: radial-gradient(rgb(255 255 255 / 0.09) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font: 600 1.05rem/1 var(--fuente-titulo);
+}
+
+.ilustracion {
+  width: min(100%, 380px);
+  height: auto;
+  margin-top: auto;
+  align-self: center;
+}
+
+.lema {
+  max-width: 16ch;
+  color: #ffffff;
+  font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+  line-height: 1.08;
+}
+
+.principal {
+  display: grid;
+  place-items: center;
+  padding: 2.5rem 1.25rem;
+}
+
+.contenedor {
+  width: 100%;
+  max-width: 460px;
+}
+
+@media (max-width: 880px) {
+  :host {
+    grid-template-columns: 1fr;
+  }
+
+  .lateral {
+    gap: 1rem;
+  }
+
+  .ilustracion {
+    display: none;
+  }
+
+  .lema {
+    max-width: none;
+    font-size: 1.6rem;
+  }
+}

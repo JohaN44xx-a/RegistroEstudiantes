@@ -1,38 +1,76 @@
 <section class="pagina">
   <header class="encabezado">
-    <h1>Registros de estudiantes</h1>
-    <p>Consulta en qué materias está inscrito cada estudiante.</p>
+    <div>
+      <h1>Registros de estudiantes</h1>
+      <p class="detalle">
+        Consulta qué materias inscribió cada estudiante. Por privacidad no se muestran documentos ni correos.
+      </p>
+    </div>
+
+    <mat-form-field appearance="outline" class="buscador" subscriptSizing="dynamic">
+      <mat-label>Buscar estudiante, programa o materia</mat-label>
+      <span matPrefix class="material-symbols-outlined prefijo" aria-hidden="true">search</span>
+      <input matInput type="search" [formControl]="busqueda" />
+      @if (busqueda.value) {
+        <button mat-icon-button matSuffix type="button" aria-label="Limpiar búsqueda" (click)="limpiar()">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      }
+    </mat-form-field>
   </header>
 
-  <mat-form-field appearance="outline" class="buscador">
-    <mat-label>Buscar por estudiante, programa o materia</mat-label>
-    <input matInput [formControl]="busqueda" />
-  </mat-form-field>
+  @if (registros(); as lista) {
+    <p class="conteo" aria-live="polite">
+      @if (filtrados().length === lista.length) {
+        {{ lista.length }} {{ lista.length === 1 ? 'estudiante' : 'estudiantes' }}
+      } @else {
+        {{ filtrados().length }} de {{ lista.length }} estudiantes
+      }
+    </p>
 
-  @if (registros() === undefined) {
-    <mat-progress-bar mode="indeterminate" />
-  } @else {
     <div class="grilla">
       @for (registro of filtrados(); track $index) {
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>{{ registro.estudiante }}</mat-card-title>
-            <mat-card-subtitle>{{ registro.programa }}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            @if (registro.materias.length > 0) {
-              <mat-chip-set aria-label="Materias inscritas">
-                @for (materia of registro.materias; track materia) {
-                  <mat-chip>{{ materia }}</mat-chip>
-                }
-              </mat-chip-set>
-            } @else {
-              <p class="vacio">Sin materias inscritas.</p>
-            }
-          </mat-card-content>
-        </mat-card>
+        <article class="registro">
+          <header>
+            <span class="avatar" aria-hidden="true">{{ registro.estudiante | iniciales }}</span>
+            <div class="identidad">
+              <h2>{{ registro.estudiante }}</h2>
+              <p class="detalle">{{ registro.programa }}</p>
+            </div>
+            <span class="insignia">{{ registro.materias.length }}/{{ maximoMaterias }}</span>
+          </header>
+
+          @if (registro.materias.length > 0) {
+            <ul class="materias" aria-label="Materias inscritas">
+              @for (materia of registro.materias; track materia) {
+                <li>
+                  <span class="material-symbols-outlined" aria-hidden="true">menu_book</span>
+                  {{ materia }}
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="sin-materias">Todavía no inscribe materias.</p>
+          }
+        </article>
       } @empty {
-        <p class="vacio">No hay registros que coincidan con la búsqueda.</p>
+        <div class="panel vacio">
+          <app-estado-vacio
+            imagen="ilustraciones/sin-resultados.svg"
+            titulo="Sin coincidencias"
+            texto="Prueba con otro nombre, programa o materia."
+          >
+            @if (busqueda.value) {
+              <button mat-stroked-button type="button" (click)="limpiar()">Limpiar búsqueda</button>
+            }
+          </app-estado-vacio>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="grilla" aria-busy="true" aria-label="Cargando registros">
+      @for (item of [1, 2, 3, 4, 5, 6]; track item) {
+        <div class="esqueleto tarjeta-cargando"></div>
       }
     </div>
   }

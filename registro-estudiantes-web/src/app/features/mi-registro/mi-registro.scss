@@ -1,46 +1,86 @@
 .pagina {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .progreso {
-  position: sticky;
+  position: fixed;
   top: 64px;
-  z-index: 5;
+  left: 0;
+  right: 0;
+  z-index: 9;
 }
 
-.encabezado {
-  h1 {
-    margin: 0;
-  }
+.portada {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  align-items: center;
+  gap: 2rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 28px;
+  color: #ffffff;
+  background-color: var(--rel-pizarra);
+  background-image: radial-gradient(rgb(255 255 255 / 0.09) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
 
-  p {
-    margin: 0.25rem 0 0;
-    opacity: 0.75;
+  h1 {
+    color: #ffffff;
+    margin: 0.4rem 0 0.6rem;
   }
+}
+
+.programa {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem 0.3rem 0.55rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.12);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.indicacion {
+  max-width: 36ch;
+  opacity: 0.82;
 }
 
 .columnas {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 1.5rem;
   align-items: start;
 }
 
-.columna {
+.columna,
+.cargando {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.error {
-  text-align: center;
-  padding: 2rem;
+.esqueleto--portada {
+  height: 220px;
+  border-radius: 28px;
 }
 
-@media (max-width: 900px) {
+.esqueleto--columna {
+  height: 380px;
+}
+
+@media (max-width: 960px) {
+  .portada,
   .columnas {
     grid-template-columns: 1fr;
+  }
+
+  // En una sola columna, las materias disponibles van antes de los datos personales.
+  .columna {
+    display: contents;
+  }
+
+  app-datos-estudiante {
+    order: 1;
   }
 }

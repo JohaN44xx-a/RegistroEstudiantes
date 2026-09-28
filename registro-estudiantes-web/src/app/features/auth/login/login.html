@@ -1,47 +1,85 @@
-<section class="acceso">
-  <mat-card appearance="outlined" class="tarjeta">
-    @if (enviando()) {
-      <mat-progress-bar mode="indeterminate" />
-    }
+<app-panel-acceso ilustracion="ilustraciones/acceso.svg" lema="Arma tu semestre en tres materias.">
+  <ul class="lista-reglas" lateral>
+    <li>
+      <span class="material-symbols-outlined" aria-hidden="true">library_books</span>
+      Hasta 3 materias por semestre
+    </li>
+    <li>
+      <span class="material-symbols-outlined" aria-hidden="true">workspace_premium</span>
+      Cada materia vale 3 créditos
+    </li>
+    <li>
+      <span class="material-symbols-outlined" aria-hidden="true">diversity_3</span>
+      Un profesor distinto en cada clase
+    </li>
+  </ul>
 
-    <mat-card-header>
-      <mat-card-title>Iniciar sesión</mat-card-title>
-      <mat-card-subtitle>Registro de estudiantes</mat-card-subtitle>
-    </mat-card-header>
+  <header class="encabezado">
+    <h2>Inicia sesión</h2>
+    <p class="detalle">Entra con el correo con el que te registraste.</p>
+  </header>
 
-    <mat-card-content>
-      <form [formGroup]="formulario" (ngSubmit)="iniciarSesion()" class="formulario">
-        <mat-form-field appearance="outline">
-          <mat-label>Correo electrónico</mat-label>
-          <input matInput type="email" formControlName="correoElectronico" autocomplete="username" />
-          @if (formulario.controls.correoElectronico.hasError('required')) {
-            <mat-error>El correo es obligatorio.</mat-error>
-          } @else if (formulario.controls.correoElectronico.hasError('email')) {
-            <mat-error>Escribe un correo válido.</mat-error>
-          }
-        </mat-form-field>
+  <form [formGroup]="formulario" (ngSubmit)="iniciarSesion()" class="formulario">
+    <mat-form-field appearance="outline">
+      <mat-label>Correo electrónico</mat-label>
+      <span matPrefix class="material-symbols-outlined prefijo" aria-hidden="true">mail</span>
+      <input matInput type="email" formControlName="correoElectronico" autocomplete="username" />
+      @if (formulario.controls.correoElectronico.hasError('required')) {
+        <mat-error>Escribe tu correo.</mat-error>
+      } @else if (formulario.controls.correoElectronico.hasError('email')) {
+        <mat-error>Revisa el formato del correo.</mat-error>
+      }
+    </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Contraseña</mat-label>
-          <input matInput type="password" formControlName="contrasena" autocomplete="current-password" />
-          <mat-error>La contraseña es obligatoria.</mat-error>
-        </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Contraseña</mat-label>
+      <span matPrefix class="material-symbols-outlined prefijo" aria-hidden="true">lock</span>
+      <input
+        matInput
+        [type]="mostrarContrasena() ? 'text' : 'password'"
+        formControlName="contrasena"
+        autocomplete="current-password"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        [attr.aria-label]="mostrarContrasena() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+        [attr.aria-pressed]="mostrarContrasena()"
+        (click)="mostrarContrasena.update((visible) => !visible)"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">
+          {{ mostrarContrasena() ? 'visibility_off' : 'visibility' }}
+        </span>
+      </button>
+      <mat-error>Escribe tu contraseña.</mat-error>
+    </mat-form-field>
 
-        <button mat-flat-button type="submit" [disabled]="enviando()">Entrar</button>
-      </form>
-    </mat-card-content>
+    <button mat-flat-button type="submit" class="enviar" [disabled]="enviando()">
+      {{ enviando() ? 'Iniciando sesión…' : 'Iniciar sesión' }}
+    </button>
+  </form>
 
-    <mat-card-actions class="acciones">
-      <span>¿No tienes cuenta?</span>
-      <a mat-button routerLink="/registro">Regístrate</a>
-    </mat-card-actions>
-  </mat-card>
+  <p class="alterno">
+    ¿Todavía no tienes cuenta?
+    <a routerLink="/registro">Crea tu cuenta</a>
+  </p>
 
   @if (mostrarUsuariosPrueba) {
-    <aside class="usuarios-prueba">
-      <strong>Usuarios de prueba (solo desarrollo)</strong>
-      <p>Estudiantes: <code>juan.perez&#64;registro.edu.co</code>, <code>ana.torres&#64;registro.edu.co</code>… con <code>Estudiante2026*</code></p>
-      <p>Administrador: <code>admin&#64;registro.edu.co</code> con <code>Admin2026*</code></p>
-    </aside>
+    <section class="prueba" aria-labelledby="titulo-prueba">
+      <h3 id="titulo-prueba">Usuarios de prueba</h3>
+      <p class="detalle">Solo en desarrollo. Elige uno para llenar el formulario.</p>
+      <div class="usuarios">
+        @for (usuario of usuariosPrueba; track usuario.correo) {
+          <button type="button" class="usuario" (click)="usarUsuarioPrueba(usuario)">
+            <span class="avatar avatar--pequeno" aria-hidden="true">{{ usuario.nombre | iniciales }}</span>
+            <span class="texto">
+              <strong>{{ usuario.nombre }}</strong>
+              <span>{{ usuario.descripcion }}</span>
+            </span>
+          </button>
+        }
+      </div>
+    </section>
   }
-</section>
+</app-panel-acceso>

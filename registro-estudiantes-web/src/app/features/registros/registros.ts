@@ -1,25 +1,35 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { catchError, debounceTime, distinctUntilChanged, map, of } from 'rxjs';
 import { RegistroPublico } from '../../core/api/modelos';
+import { MAXIMO_MATERIAS } from '../../core/api/reglas';
 import { RegistrosService } from '../../core/api/registros.service';
+import { EstadoVacio } from '../../shared/estado-vacio';
+import { InicialesPipe } from '../../shared/iniciales.pipe';
 import { NotificacionService } from '../../shared/notificacion.service';
 
 @Component({
   selector: 'app-registros',
-  imports: [ReactiveFormsModule, MatCardModule, MatChipsModule, MatFormFieldModule, MatInputModule, MatProgressBarModule],
+  imports: [
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    EstadoVacio,
+    InicialesPipe,
+  ],
   templateUrl: './registros.html',
   styleUrl: './registros.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Registros {
   private readonly notificacion = inject(NotificacionService);
+
+  protected readonly maximoMaterias = MAXIMO_MATERIAS;
 
   protected readonly registros = toSignal(
     inject(RegistrosService)
@@ -58,4 +68,8 @@ export class Registros {
         registro.materias.some((materia) => materia.toLowerCase().includes(termino)),
     );
   });
+
+  protected limpiar(): void {
+    this.busqueda.setValue('');
+  }
 }

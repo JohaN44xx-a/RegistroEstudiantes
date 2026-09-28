@@ -1,27 +1,59 @@
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  background: #fdf3da;
+  color: #6b4a00;
+  font-size: 0.9rem;
+}
+
+.lista {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .opcion {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  padding: 0.85rem 0;
+  gap: 0.85rem;
+  padding: 0.75rem 0.6rem;
+  border-radius: 14px;
+  transition: background-color 0.15s;
 
-  h3 {
-    margin: 0;
-    font-size: 1rem;
+  &:not(.opcion--bloqueada):hover {
+    background: var(--tono-suave);
   }
 }
 
-.bloqueada h3 {
-  opacity: 0.6;
+.cuerpo {
+  flex: 1;
+  min-width: 0;
 }
 
-.detalle {
-  margin: 0.2rem 0 0;
-  opacity: 0.75;
+.opcion--bloqueada {
+  h3,
+  .detalle,
+  .avatar {
+    opacity: 0.55;
+  }
 }
 
 .motivo {
-  margin: 0.2rem 0 0;
-  font-size: 0.85rem;
-  color: #b3261e;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.3rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--tono);
+
+  .material-symbols-outlined {
+    font-size: 1rem;
+  }
 }

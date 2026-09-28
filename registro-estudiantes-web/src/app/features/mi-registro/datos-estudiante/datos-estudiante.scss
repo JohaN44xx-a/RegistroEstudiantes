@@ -1,30 +1,57 @@
 .formulario {
   display: flex;
   flex-direction: column;
-  padding-top: 1rem;
 }
 
-.datos {
+.documento {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.5rem 1rem;
-  margin: 1rem 0;
-
-  dt {
-    font-weight: 600;
-  }
-
-  dd {
-    margin: 0;
-  }
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1rem;
 }
 
 .botones {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 0.5rem;
 }
 
+.datos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+  margin: 0;
+
+  dt {
+    font-size: 0.8rem;
+    color: var(--rel-tinta-suave);
+  }
+
+  dd {
+    margin: 0.15rem 0 0;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+}
+
+.zona-peligro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rel-linea);
+}
+
 .peligro {
-  color: #b3261e;
+  --mat-button-text-label-text-color: var(--rel-peligro);
+  --mat-button-text-state-layer-color: var(--rel-peligro);
+}
+
+@media (max-width: 480px) {
+  .datos,
+  .documento {
+    grid-template-columns: 1fr;
+  }
 }

@@ -1,74 +1,109 @@
-<section class="acceso">
-  <mat-card appearance="outlined" class="tarjeta">
-    @if (enviando() || !catalogos()) {
-      <mat-progress-bar mode="indeterminate" />
-    }
+<app-panel-acceso ilustracion="ilustraciones/registro.svg" lema="Tu carnet listo en un minuto.">
+  <ol class="lista-reglas pasos" lateral>
+    <li>
+      <span class="material-symbols-outlined" aria-hidden="true">badge</span>
+      Crea tu cuenta con tus datos
+    </li>
+    <li>
+      <span class="material-symbols-outlined" aria-hidden="true">library_add</span>
+      Inscribe hasta 3 materias de tu plan
+    </li>
+    <li>
+      <span class="material-symbols-outlined" aria-hidden="true">diversity_3</span>
+      Conoce a tus compañeros de clase
+    </li>
+  </ol>
 
-    <mat-card-header>
-      <mat-card-title>Crear cuenta</mat-card-title>
-      <mat-card-subtitle>Regístrate en el programa de créditos</mat-card-subtitle>
-    </mat-card-header>
+  <header class="encabezado">
+    <h2>Crea tu cuenta</h2>
+    <p class="detalle">Después de registrarte entras directo a elegir tus materias.</p>
+  </header>
 
-    <mat-card-content>
-      <form [formGroup]="formulario" (ngSubmit)="registrar()" class="formulario">
-        <mat-form-field appearance="outline" class="completo">
-          <mat-label>Nombre completo</mat-label>
-          <input matInput formControlName="nombre" autocomplete="name" />
-          <mat-error>El nombre es obligatorio.</mat-error>
-        </mat-form-field>
+  @if (!catalogos()) {
+    <div class="cargando" aria-busy="true" aria-label="Cargando formulario">
+      @for (fila of [1, 2, 3, 4]; track fila) {
+        <div class="esqueleto fila"></div>
+      }
+    </div>
+  } @else {
+    <form [formGroup]="formulario" (ngSubmit)="registrar()" class="formulario">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre completo</mat-label>
+        <input matInput formControlName="nombre" autocomplete="name" />
+        <mat-error>Escribe tu nombre completo.</mat-error>
+      </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Tipo de documento</mat-label>
-          <mat-select formControlName="idTipoIdentificacion">
-            @for (tipo of catalogos()?.tipos ?? []; track tipo.id) {
-              <mat-option [value]="tipo.id">{{ tipo.nombre }}</mat-option>
-            }
-          </mat-select>
-          <mat-error>Selecciona el tipo de documento.</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Número de documento</mat-label>
-          <input matInput formControlName="numeroIdentificacion" />
-          <mat-error>El número de documento es obligatorio.</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="completo">
-          <mat-label>Programa</mat-label>
-          <mat-select formControlName="idPrograma">
-            @for (programa of catalogos()?.programas ?? []; track programa.id) {
-              <mat-option [value]="programa.id">{{ programa.nombre }}</mat-option>
-            }
-          </mat-select>
-          <mat-error>Selecciona tu programa.</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="completo">
-          <mat-label>Correo electrónico</mat-label>
-          <input matInput type="email" formControlName="correoElectronico" autocomplete="email" />
-          @if (formulario.controls.correoElectronico.hasError('email')) {
-            <mat-error>Escribe un correo válido.</mat-error>
-          } @else {
-            <mat-error>El correo es obligatorio.</mat-error>
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de documento</mat-label>
+        <mat-select formControlName="idTipoIdentificacion">
+          @for (tipo of catalogos()?.tipos ?? []; track tipo.id) {
+            <mat-option [value]="tipo.id">{{ tipo.nombre }}</mat-option>
           }
-        </mat-form-field>
+        </mat-select>
+        <mat-error>Elige el tipo de documento.</mat-error>
+      </mat-form-field>
 
-        <mat-form-field appearance="outline" class="completo">
-          <mat-label>Contraseña</mat-label>
-          <input matInput type="password" formControlName="contrasena" autocomplete="new-password" />
-          <mat-hint>Mínimo {{ longitudMinimaContrasena }} caracteres.</mat-hint>
-          <mat-error>La contraseña debe tener al menos {{ longitudMinimaContrasena }} caracteres.</mat-error>
-        </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Número de documento</mat-label>
+        <input matInput formControlName="numeroIdentificacion" inputmode="numeric" />
+        <mat-error>Escribe el número de documento.</mat-error>
+      </mat-form-field>
 
-        <button mat-flat-button type="submit" class="completo" [disabled]="enviando() || !catalogos()">
-          Crear cuenta
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="programa">
+        <mat-label>Programa</mat-label>
+        <mat-select formControlName="idPrograma">
+          @for (programa of catalogos()?.programas ?? []; track programa.id) {
+            <mat-option [value]="programa.id">{{ programa.nombre }}</mat-option>
+          }
+        </mat-select>
+        <mat-hint>Define las materias que podrás inscribir y no se cambia después.</mat-hint>
+        <mat-error>Elige tu programa.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correo electrónico</mat-label>
+        <span matPrefix class="material-symbols-outlined prefijo" aria-hidden="true">mail</span>
+        <input matInput type="email" formControlName="correoElectronico" autocomplete="email" />
+        @if (formulario.controls.correoElectronico.hasError('email')) {
+          <mat-error>Revisa el formato del correo.</mat-error>
+        } @else {
+          <mat-error>Escribe tu correo.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <span matPrefix class="material-symbols-outlined prefijo" aria-hidden="true">lock</span>
+        <input
+          matInput
+          [type]="mostrarContrasena() ? 'text' : 'password'"
+          formControlName="contrasena"
+          autocomplete="new-password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          [attr.aria-label]="mostrarContrasena() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+          [attr.aria-pressed]="mostrarContrasena()"
+          (click)="mostrarContrasena.update((visible) => !visible)"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">
+            {{ mostrarContrasena() ? 'visibility_off' : 'visibility' }}
+          </span>
         </button>
-      </form>
-    </mat-card-content>
+        <mat-hint>Mínimo {{ longitudMinimaContrasena }} caracteres.</mat-hint>
+        <mat-error>Usa al menos {{ longitudMinimaContrasena }} caracteres.</mat-error>
+      </mat-form-field>
 
-    <mat-card-actions class="acciones">
-      <span>¿Ya tienes cuenta?</span>
-      <a mat-button routerLink="/login">Inicia sesión</a>
-    </mat-card-actions>
-  </mat-card>
-</section>
+      <button mat-flat-button type="submit" class="enviar" [disabled]="enviando()">
+        {{ enviando() ? 'Creando tu cuenta…' : 'Crear cuenta' }}
+      </button>
+    </form>
+  }
+
+  <p class="alterno">
+    ¿Ya tienes cuenta?
+    <a routerLink="/login">Inicia sesión</a>
+  </p>
+</app-panel-acceso>
